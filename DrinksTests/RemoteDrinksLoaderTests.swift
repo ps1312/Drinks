@@ -6,6 +6,7 @@
 //
 
 import XCTest
+import Drinks
 
 protocol HTTPClient {
     func get(_ url: URL) async throws -> Void
@@ -24,9 +25,11 @@ class RemoteDrinksLoader {
         case request
     }
 
-    func load() async throws {
+    func load() async throws -> [Drink] {
         do {
             try await httpClient.get(url)
+
+            return []
         } catch {
             throw Error.request
         }
@@ -36,45 +39,51 @@ class RemoteDrinksLoader {
 class RemoteDrinksLoaderTests: XCTestCase {
     func testDoesNotMakeRequestsOnInit() {
         let httpClientSpy = HTTPClientSpy()
-        let _ = makeSUT(httpClient: httpClientSpy)
+        let _ = makeSUT()
 
         XCTAssertEqual(httpClientSpy.requests.count, 0)
     }
 
     func testMakeRequestsWithProvidedUrlOnLoad() async throws {
-        let httpClientSpy = HTTPClientSpy()
         let expectedUrl = URL(string: "https://www.any-url.com")!
-        let sut = makeSUT(url: expectedUrl, httpClient: httpClientSpy)
+        let (sut, httpClient) = makeSUT(url: expectedUrl)
 
-        try await sut.load()
+        let _ = try await sut.load()
 
-        XCTAssertEqual(httpClientSpy.requests, [expectedUrl])
+        XCTAssertEqual(httpClient.requests, [expectedUrl])
     }
 
     func testReturnsErrorOnRequestFailure() async {
-        let sut = makeSUT(httpClient: HTTPClientSpy(failing: true))
+        let (sut, httpClient) = makeSUT()
+        httpClient.failing = true
 
         do {
-            try await sut.load()
+            let _ = try await sut.load()
         } catch {
             let capturedError = error as? RemoteDrinksLoader.Error
             XCTAssertEqual(capturedError, .request)
         }
     }
 
-    func makeSUT(url: URL = URL(string: "https://www.any-url.com")!, httpClient: HTTPClientSpy) -> RemoteDrinksLoader {
+    func testReturnsEmptyArrayOnRequestSuccess() async throws {
+        let (sut,_) = makeSUT()
+
+        let result = try await sut.load()
+
+        XCTAssertEqual(result.count, 0)
+    }
+
+    func makeSUT(url: URL = URL(string: "https://www.any-url.com")!) -> (sut: RemoteDrinksLoader, httpClient: HTTPClientSpy) {
+        let httpClient = HTTPClientSpy()
         let sut = RemoteDrinksLoader(url: url, httpClient: httpClient)
-        return sut
+
+        return (sut, httpClient)
     }
 }
 
 class HTTPClientSpy: HTTPClient {
     var requests: [URL] = []
-    private let failing: Bool
-
-    init(failing: Bool = false) {
-        self.failing = failing
-    }
+    var failing: Bool = false
 
     func get(_ url: URL) throws {
         requests.append(url)

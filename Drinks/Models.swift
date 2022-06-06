@@ -12,7 +12,7 @@ import Foundation
 // "strDrink":"Margarita",
 // "strDrinkThumb":"https:\/\/www.thecocktaildb.com\/images\/media\/drink\/5noda61589575158.jpg",
 
-struct Drink {
+public struct Drink {
     var id: Int
     var name: String
     var thumb: String
