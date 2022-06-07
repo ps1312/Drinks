@@ -32,6 +32,27 @@
 			remoteGlobalIDString = 3AD686F3284E962F00D6B889;
 			remoteInfo = Drinks;
 		};
+		3AF203C728501D0900B3F93A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3AF203C128501D0900B3F93A /* DrinksApp.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3AF2038E28501D0700B3F93A;
+			remoteInfo = DrinksApp;
+		};
+		3AF203C928501D0900B3F93A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3AF203C128501D0900B3F93A /* DrinksApp.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3AF203A428501D0800B3F93A;
+			remoteInfo = DrinksAppTests;
+		};
+		3AF203CB28501D0900B3F93A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3AF203C128501D0900B3F93A /* DrinksApp.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3AF203AE28501D0900B3F93A;
+			remoteInfo = DrinksAppUITests;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +65,7 @@
 		3AD6870C284E96D800D6B889 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		3AD6870E284ED17900D6B889 /* RemoteDrinksLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteDrinksLoader.swift; sourceTree = "<group>"; };
 		3AD68712284ED3D900D6B889 /* URLSessionHTTPClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionHTTPClientTests.swift; sourceTree = "<group>"; };
+		3AF203C128501D0900B3F93A /* DrinksApp.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = DrinksApp.xcodeproj; path = DrinksApp/DrinksApp.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +106,7 @@
 		3AD686EA284E962F00D6B889 = {
 			isa = PBXGroup;
 			children = (
+				3AF203C128501D0900B3F93A /* DrinksApp.xcodeproj */,
 				3AD686F6284E962F00D6B889 /* DrinksCore */,
 				3AD68700284E962F00D6B889 /* DrinksCoreTests */,
 				3AAE10C4285009990013C555 /* DrinksCoreIntegrationTests */,
@@ -118,6 +141,16 @@
 				3AD68712284ED3D900D6B889 /* URLSessionHTTPClientTests.swift */,
 			);
 			path = DrinksCoreTests;
+			sourceTree = "<group>";
+		};
+		3AF203C228501D0900B3F93A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3AF203C828501D0900B3F93A /* DrinksApp.app */,
+				3AF203CA28501D0900B3F93A /* DrinksAppTests.xctest */,
+				3AF203CC28501D0900B3F93A /* DrinksAppUITests.xctest */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -220,6 +253,12 @@
 			mainGroup = 3AD686EA284E962F00D6B889;
 			productRefGroup = 3AD686F5284E962F00D6B889 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 3AF203C228501D0900B3F93A /* Products */;
+					ProjectRef = 3AF203C128501D0900B3F93A /* DrinksApp.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				3AD686F3284E962F00D6B889 /* DrinksCore */,
@@ -228,6 +267,30 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		3AF203C828501D0900B3F93A /* DrinksApp.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = DrinksApp.app;
+			remoteRef = 3AF203C728501D0900B3F93A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		3AF203CA28501D0900B3F93A /* DrinksAppTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = DrinksAppTests.xctest;
+			remoteRef = 3AF203C928501D0900B3F93A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		3AF203CC28501D0900B3F93A /* DrinksAppUITests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = DrinksAppUITests.xctest;
+			remoteRef = 3AF203CB28501D0900B3F93A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		3AAE10C1285009990013C555 /* Resources */ = {
