@@ -7,10 +7,9 @@
 
 import Foundation
 
-// url: https://www.thecocktaildb.com/api/json/v1/1/filter.php?a=Alcoholic
-// "idDrink":"11007",
-// "strDrink":"Margarita",
-// "strDrinkThumb":"https:\/\/www.thecocktaildb.com\/images\/media\/drink\/5noda61589575158.jpg",
+public protocol HTTPClient {
+    func get(_ url: URL) async throws -> Data
+}
 
 public struct Drink: Equatable {
     public let id: Int
@@ -24,4 +23,3 @@ public struct Drink: Equatable {
     }
 }
 
-protocol DrinksLoader {}
