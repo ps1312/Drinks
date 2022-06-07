@@ -23,16 +23,34 @@ class URLSessionHTTPClient: HTTPClient {
 
 class URLSessionHTTPClientTests: XCTestCase {
 
-    func testMakesRequestWithCorrectURL() async {
+    override func setUp() {
+        URLProtocolStub.request = nil
+        URLProtocolStub.mockData = nil
         URLProtocol.registerClass(URLProtocolStub.self)
+    }
 
+    override func tearDown() {
+        URLProtocol.unregisterClass(URLProtocolStub.self)
+    }
+
+    func testMakesRequestWithCorrectURL() async {
         let expectedUrl = URL(string: "https://www.specific-url.com")!
         let client = URLSessionHTTPClient()
 
         let _ = try? await client.get(expectedUrl)
 
         XCTAssertEqual(URLProtocolStub.request?.url, expectedUrl)
-        URLProtocol.unregisterClass(URLProtocolStub.self)
+    }
+
+    func testReturnsDataWhenRequestCompletes() async {
+        let expectedResult = String("expected response data").data(using: .utf8)!
+        URLProtocolStub.mockData = expectedResult
+
+        let client = URLSessionHTTPClient()
+
+        let result = try? await client.get(URL(string: "https://www.any-url.com")!)
+
+        XCTAssertEqual(result, expectedResult)
     }
 
 }
@@ -40,6 +58,7 @@ class URLSessionHTTPClientTests: XCTestCase {
 
 class URLProtocolStub: URLProtocol {
     static var request: URLRequest? = nil
+    static var mockData: Data? = nil
 
     override class func canInit(with request: URLRequest) -> Bool { return true }
 
@@ -47,8 +66,14 @@ class URLProtocolStub: URLProtocol {
 
     override func startLoading() {
         URLProtocolStub.request = request
-        
-        client?.urlProtocol(self, didFailWithError: NSError(domain: "any domain", code: 1))
+
+        if (URLProtocolStub.mockData != nil) {
+            client?.urlProtocol(self, didReceive: URLResponse(url: request.url!, mimeType: "", expectedContentLength: 0, textEncodingName: ""), cacheStoragePolicy: .notAllowed)
+            client?.urlProtocol(self, didLoad: URLProtocolStub.mockData!)
+        } else {
+            client?.urlProtocol(self, didFailWithError: NSError(domain: "any domain", code: 1))
+        }
+
         client?.urlProtocolDidFinishLoading(self)
     }
 
