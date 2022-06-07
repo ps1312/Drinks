@@ -18,6 +18,7 @@ public class RemoteDrinksLoader {
 
     public enum Error: Swift.Error {
         case request
+        case decoder
     }
 
     public func load() async throws -> [Drink] {
@@ -25,6 +26,8 @@ public class RemoteDrinksLoader {
             let data = try await httpClient.get(url)
             let result = try JSONDecoder().decode(ApiDrinksResult.self, from: data)
             return result.drinks.map { Drink(id: Int($0.idDrink)!, name: $0.strDrink, thumb: URL(string: $0.strDrinkThumb)!) }
+        } catch DecodingError.dataCorrupted {
+            throw Error.decoder
         } catch {
             throw Error.request
         }

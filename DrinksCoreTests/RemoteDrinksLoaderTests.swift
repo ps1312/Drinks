@@ -37,6 +37,18 @@ class RemoteDrinksLoaderTests: XCTestCase {
         }
     }
 
+    func testReturnsDecoderErrorOnInvalidJSON() async {
+        let (sut, httpClient) = makeSUT()
+        httpClient.response = "invalid json".data(using: .utf8)!
+
+        do {
+            let _ = try await sut.load()
+        } catch {
+            let capturedError = error as? RemoteDrinksLoader.Error
+            XCTAssertEqual(capturedError, .decoder)
+        }
+    }
+
     func testReturnsEmptyArrayOnRequestSuccess() async throws {
         let (sut,_) = makeSUT()
 
