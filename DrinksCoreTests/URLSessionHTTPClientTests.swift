@@ -8,19 +8,6 @@
 import XCTest
 import DrinksCore
 
-class URLSessionHTTPClient: HTTPClient {
-    private let urlSession: URLSession
-
-    init(urlSession: URLSession = URLSession.shared) {
-        self.urlSession = urlSession
-    }
-
-    func get(_ url: URL) async throws -> Data {
-        let (data, _) = try await urlSession.data(from: url)
-        return data
-    }
-}
-
 class URLSessionHTTPClientTests: XCTestCase {
 
     override func setUp() {
@@ -68,7 +55,8 @@ class URLProtocolStub: URLProtocol {
         URLProtocolStub.request = request
 
         if (URLProtocolStub.mockData != nil) {
-            client?.urlProtocol(self, didReceive: URLResponse(url: request.url!, mimeType: "", expectedContentLength: 0, textEncodingName: ""), cacheStoragePolicy: .notAllowed)
+            let urlResponse = URLResponse(url: request.url!, mimeType: "", expectedContentLength: 0, textEncodingName: "")
+            client?.urlProtocol(self, didReceive: urlResponse, cacheStoragePolicy: .notAllowed)
             client?.urlProtocol(self, didLoad: URLProtocolStub.mockData!)
         } else {
             client?.urlProtocol(self, didFailWithError: NSError(domain: "any domain", code: 1))

@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3AAE10C6285009990013C555 /* DrinksCoreIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AAE10C5285009990013C555 /* DrinksCoreIntegrationTests.swift */; };
+		3AAE10C7285009990013C555 /* DrinksCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AD686F4284E962F00D6B889 /* DrinksCore.framework */; };
+		3AAE10CE28500A0F0013C555 /* URLSessionHTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AAE10CD28500A0F0013C555 /* URLSessionHTTPClient.swift */; };
 		3AD686FD284E962F00D6B889 /* DrinksCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AD686F4284E962F00D6B889 /* DrinksCore.framework */; };
 		3AD68702284E962F00D6B889 /* RemoteDrinksLoaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD68701284E962F00D6B889 /* RemoteDrinksLoaderTests.swift */; };
 		3AD6870D284E96D800D6B889 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD6870C284E96D800D6B889 /* Models.swift */; };
@@ -15,6 +18,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		3AAE10C8285009990013C555 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3AD686EB284E962F00D6B889 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3AD686F3284E962F00D6B889;
+			remoteInfo = DrinksCore;
+		};
 		3AD686FE284E962F00D6B889 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 3AD686EB284E962F00D6B889 /* Project object */;
@@ -25,6 +35,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3AAE10C3285009990013C555 /* DrinksCoreIntegrationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DrinksCoreIntegrationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3AAE10C5285009990013C555 /* DrinksCoreIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinksCoreIntegrationTests.swift; sourceTree = "<group>"; };
+		3AAE10CD28500A0F0013C555 /* URLSessionHTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionHTTPClient.swift; sourceTree = "<group>"; };
 		3AD686F4284E962F00D6B889 /* DrinksCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DrinksCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AD686FC284E962F00D6B889 /* DrinksCoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DrinksCoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AD68701284E962F00D6B889 /* RemoteDrinksLoaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteDrinksLoaderTests.swift; sourceTree = "<group>"; };
@@ -34,6 +47,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		3AAE10C0285009990013C555 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3AAE10C7285009990013C555 /* DrinksCore.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		3AD686F1284E962F00D6B889 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -52,11 +73,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3AAE10C4285009990013C555 /* DrinksCoreIntegrationTests */ = {
+			isa = PBXGroup;
+			children = (
+				3AAE10C5285009990013C555 /* DrinksCoreIntegrationTests.swift */,
+			);
+			path = DrinksCoreIntegrationTests;
+			sourceTree = "<group>";
+		};
 		3AD686EA284E962F00D6B889 = {
 			isa = PBXGroup;
 			children = (
 				3AD686F6284E962F00D6B889 /* DrinksCore */,
 				3AD68700284E962F00D6B889 /* DrinksCoreTests */,
+				3AAE10C4285009990013C555 /* DrinksCoreIntegrationTests */,
 				3AD686F5284E962F00D6B889 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -66,6 +96,7 @@
 			children = (
 				3AD686F4284E962F00D6B889 /* DrinksCore.framework */,
 				3AD686FC284E962F00D6B889 /* DrinksCoreTests.xctest */,
+				3AAE10C3285009990013C555 /* DrinksCoreIntegrationTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -75,6 +106,7 @@
 			children = (
 				3AD6870C284E96D800D6B889 /* Models.swift */,
 				3AD6870E284ED17900D6B889 /* RemoteDrinksLoader.swift */,
+				3AAE10CD28500A0F0013C555 /* URLSessionHTTPClient.swift */,
 			);
 			path = DrinksCore;
 			sourceTree = "<group>";
@@ -101,6 +133,24 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		3AAE10C2285009990013C555 /* DrinksCoreIntegrationTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3AAE10CA285009990013C555 /* Build configuration list for PBXNativeTarget "DrinksCoreIntegrationTests" */;
+			buildPhases = (
+				3AAE10BF285009990013C555 /* Sources */,
+				3AAE10C0285009990013C555 /* Frameworks */,
+				3AAE10C1285009990013C555 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3AAE10C9285009990013C555 /* PBXTargetDependency */,
+			);
+			name = DrinksCoreIntegrationTests;
+			productName = DrinksCoreIntegrationTests;
+			productReference = 3AAE10C3285009990013C555 /* DrinksCoreIntegrationTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		3AD686F3284E962F00D6B889 /* DrinksCore */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3AD68706284E962F00D6B889 /* Build configuration list for PBXNativeTarget "DrinksCore" */;
@@ -147,6 +197,9 @@
 				LastSwiftUpdateCheck = 1330;
 				LastUpgradeCheck = 1330;
 				TargetAttributes = {
+					3AAE10C2285009990013C555 = {
+						CreatedOnToolsVersion = 13.3.1;
+					};
 					3AD686F3284E962F00D6B889 = {
 						CreatedOnToolsVersion = 13.3.1;
 						LastSwiftMigration = 1330;
@@ -171,11 +224,19 @@
 			targets = (
 				3AD686F3284E962F00D6B889 /* DrinksCore */,
 				3AD686FB284E962F00D6B889 /* DrinksCoreTests */,
+				3AAE10C2285009990013C555 /* DrinksCoreIntegrationTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		3AAE10C1285009990013C555 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		3AD686F2284E962F00D6B889 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -193,12 +254,21 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		3AAE10BF285009990013C555 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3AAE10C6285009990013C555 /* DrinksCoreIntegrationTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		3AD686F0284E962F00D6B889 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				3AD6870D284E96D800D6B889 /* Models.swift in Sources */,
 				3AD6870F284ED17900D6B889 /* RemoteDrinksLoader.swift in Sources */,
+				3AAE10CE28500A0F0013C555 /* URLSessionHTTPClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -214,6 +284,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		3AAE10C9285009990013C555 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3AD686F3284E962F00D6B889 /* DrinksCore */;
+			targetProxy = 3AAE10C8285009990013C555 /* PBXContainerItemProxy */;
+		};
 		3AD686FF284E962F00D6B889 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 3AD686F3284E962F00D6B889 /* DrinksCore */;
@@ -222,6 +297,38 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		3AAE10CB285009990013C555 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 99FHZVWMRA;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.DrinksCoreIntegrationTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		3AAE10CC285009990013C555 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 99FHZVWMRA;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.DrinksCoreIntegrationTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		3AD68704284E962F00D6B889 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -438,6 +545,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		3AAE10CA285009990013C555 /* Build configuration list for PBXNativeTarget "DrinksCoreIntegrationTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3AAE10CB285009990013C555 /* Debug */,
+				3AAE10CC285009990013C555 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		3AD686EE284E962F00D6B889 /* Build configuration list for PBXProject "Drinks" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
