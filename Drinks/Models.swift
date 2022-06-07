@@ -12,10 +12,16 @@ import Foundation
 // "strDrink":"Margarita",
 // "strDrinkThumb":"https:\/\/www.thecocktaildb.com\/images\/media\/drink\/5noda61589575158.jpg",
 
-public struct Drink {
-    var id: Int
-    var name: String
-    var thumb: String
+public struct Drink: Equatable {
+    public let id: Int
+    public let name: String
+    public let thumb: URL
+
+    public init(id: Int, name: String, thumb: URL) {
+        self.id = id
+        self.name = name
+        self.thumb = thumb
+    }
 }
 
 protocol DrinksLoader {}

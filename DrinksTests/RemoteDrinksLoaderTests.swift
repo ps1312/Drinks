@@ -9,7 +9,7 @@ import XCTest
 import Drinks
 
 protocol HTTPClient {
-    func get(_ url: URL) async throws -> Void
+    func get(_ url: URL) async throws -> Data
 }
 
 class RemoteDrinksLoader {
@@ -27,12 +27,26 @@ class RemoteDrinksLoader {
 
     func load() async throws -> [Drink] {
         do {
-            try await httpClient.get(url)
-
-            return []
+            let data = try await httpClient.get(url)
+            let result = try JSONDecoder().decode(ApiDrinksResult.self, from: data)
+            return result.drinks.map { Drink(id: Int($0.idDrink)!, name: $0.strDrink, thumb: URL(string: $0.strDrinkThumb)!) }
         } catch {
             throw Error.request
         }
+    }
+}
+
+struct ApiDrink: Decodable {
+  var strDrink: String
+  var strDrinkThumb: String
+  var idDrink: String
+}
+
+struct ApiDrinksResult: Decodable {
+    let drinks: [ApiDrink]
+
+    init(drinks: [ApiDrink]) {
+        self.drinks = drinks
     }
 }
 
@@ -73,6 +87,24 @@ class RemoteDrinksLoaderTests: XCTestCase {
         XCTAssertEqual(result.count, 0)
     }
 
+    func testReturnsDrinksArrayWhenRequestCompletesWithData() async throws {
+        let drink1 = Drink(id: 0, name: "name 1", thumb: URL(string: "https://www.any-url.com/image1")!)
+        let drink2 = Drink(id: 1, name: "name 2", thumb: URL(string: "https://www.any-url.com/image2")!)
+        let (sut, httpClient) = makeSUT()
+        httpClient.response = """
+        {
+            "drinks": [
+                {"strDrink":"name 1","strDrinkThumb":"https://www.any-url.com/image1","idDrink":"0"},
+                {"strDrink":"name 2","strDrinkThumb":"https://www.any-url.com/image2","idDrink":"1"}
+            ]
+        }
+        """.data(using: .utf8)!
+
+        let result = try await sut.load()
+
+        XCTAssertEqual(result, [drink1, drink2])
+    }
+
     func makeSUT(url: URL = URL(string: "https://www.any-url.com")!) -> (sut: RemoteDrinksLoader, httpClient: HTTPClientSpy) {
         let httpClient = HTTPClientSpy()
         let sut = RemoteDrinksLoader(url: url, httpClient: httpClient)
@@ -84,10 +116,11 @@ class RemoteDrinksLoaderTests: XCTestCase {
 class HTTPClientSpy: HTTPClient {
     var requests: [URL] = []
     var failing: Bool = false
+    var response = String("{\"drinks\": []}").data(using: .utf8)!
 
-    func get(_ url: URL) throws {
+    func get(_ url: URL) throws -> Data {
         requests.append(url)
-
         if (failing) { throw NSError(domain: "any domain", code: 1) }
+        return response
     }
 }
