@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class RemoteDrinksLoader {
+public class RemoteDrinksLoader: DrinksLoader {
     private let url: URL
     private let httpClient: HTTPClient
 

@@ -6,14 +6,18 @@
 //
 
 import UIKit
+import DrinksCore
 
-class ViewController: UIViewController {
+class DrinksViewController: UITableViewController {
+    var drinksLoader: DrinksLoader?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-    }
 
+        Task {
+            try? await drinksLoader?.load()
+        }
+    }
 
 }
 

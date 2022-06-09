@@ -7,6 +7,10 @@
 
 import Foundation
 
+public protocol DrinksLoader {
+    func load() async throws -> [Drink]
+}
+
 public protocol HTTPClient {
     func get(_ url: URL) async throws -> Data
 }
