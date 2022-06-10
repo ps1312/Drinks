@@ -11,41 +11,47 @@ import DrinksCore
 
 class DrinksAppTests: XCTestCase {
 
-    func testMakeDrinksRequestOnViewDidLoad() throws {
-        let vc = UIStoryboard(name: "Main", bundle: nil)
+    func testMakeDrinksRequestOnViewDidLoad() {
+        let exp = XCTestExpectation(description: "Wait for getDrinks to be called...")
 
-        let exp = expectation(description: "Waiting for loader to be called...")
-        let remoteDrinksLoaderSpy = RemoteDrinksLoaderSpy()
-        remoteDrinksLoaderSpy.onLoad = { exp.fulfill() }
+        let sut = makeSUT()
 
-        let sut = vc.instantiateViewController(withIdentifier: "DrinksViewController") as! DrinksViewController
-        sut.drinksLoader = remoteDrinksLoaderSpy
+        sut.getDrinks = {
+            exp.fulfill()
+            return []
+        }
 
-        sut.viewDidLoad()
+        sut.loadViewIfNeeded()
 
         wait(for: [exp], timeout: 0.01)
     }
 
-}
+    func testDisplayLoadingWhileFetchingDrinks() throws {
+        let exp = XCTestExpectation(description: "Wait for getDrinks to be called...")
 
-class RemoteDrinksLoaderSpy: DrinksLoader {
-    var onLoad: (() -> Void)? = nil
+        let sut = makeSUT()
 
-    func load() async throws -> [Drink] {
-        onLoad?()
-        return []
+        sut.getDrinks = {
+            exp.fulfill()
+            return []
+        }
+
+        sut.loadViewIfNeeded()
+
+        let loadingIndicator = try? XCTUnwrap(sut.tableView.backgroundView as? UIActivityIndicatorView)
+        XCTAssertTrue(loadingIndicator!.isAnimating)
+
+        wait(for: [exp], timeout: 0.01)
+
+        XCTAssertNil(sut.tableView.backgroundView)
+
     }
-}
 
+    private func makeSUT() -> DrinksViewController {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let sut = storyboard.instantiateViewController(withIdentifier: "DrinksViewController") as! DrinksViewController
 
-class HTTPClientSpy: HTTPClient {
-    var requests: [URL] = []
-    var failing: Bool = false
-    var response = String("{\"drinks\": []}").data(using: .utf8)!
-
-    func get(_ url: URL) throws -> Data {
-        requests.append(url)
-        if (failing) { throw NSError(domain: "any domain", code: 1) }
-        return response
+        return sut
     }
+
 }
