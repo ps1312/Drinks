@@ -9,8 +9,8 @@ import UIKit
 import DrinksCore
 
 class DrinksViewController: UITableViewController {
-    var getDrinks: (() async throws -> [Drink])?
     var drinks = [Drink]()
+    var getDrinks: (() async throws -> [Drink])!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,8 +20,6 @@ class DrinksViewController: UITableViewController {
         tableView.backgroundView = loadingIndicator
 
         Task {
-            guard let getDrinks = getDrinks else { return }
-
             drinks = try await getDrinks()
             tableView.backgroundView = nil
             tableView.reloadData()
