@@ -46,6 +46,24 @@ class DrinksAppTests: XCTestCase {
         XCTAssertNil(sut.tableView.backgroundView)
     }
 
+    func testDisplaysAnErrorMessageWhenLoadingDrinksFails() throws {
+        let exp = XCTestExpectation(description: "Wait for getDrinks to be called...")
+
+        let sut = makeSUT()
+
+        sut.getDrinks = {
+            exp.fulfill()
+            throw NSError(domain: "domain", code: 0)
+        }
+
+        sut.loadViewIfNeeded()
+
+        wait(for: [exp], timeout: 0.01)
+
+        let errorLabel = try? XCTUnwrap(sut.tableView.backgroundView as? UILabel)
+        XCTAssertEqual(errorLabel?.text, "Something went wrong")
+    }
+
     func testDisplayEachDrinkOnList() {
         let exp = XCTestExpectation(description: "Wait for getDrinks to be called...")
         let drinks = [
@@ -69,8 +87,8 @@ class DrinksAppTests: XCTestCase {
         wait(for: [exp], timeout: 0.01)
 
         for i in 0...drinks.count - 1 {
-            let cell = try! XCTUnwrap(sut.tableView.cellForRow(at: IndexPath(row: i, section: 0)))
-            XCTAssertEqual(cell.textLabel!.text, drinks[i].name)
+            let cell = try! XCTUnwrap(sut.tableView.cellForRow(at: IndexPath(row: i, section: 0)) as? DrinkListItem)
+            XCTAssertEqual(cell.nameLabel.text, drinks[i].name)
         }
     }
 

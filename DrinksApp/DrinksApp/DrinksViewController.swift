@@ -24,9 +24,15 @@ class DrinksViewController: UITableViewController {
         tableView.backgroundView = loadingIndicator
 
         Task {
-            drinks = try await getDrinks()
-            tableView.backgroundView = nil
-            tableView.reloadData()
+            do {
+                drinks = try await getDrinks()
+                tableView.backgroundView = nil
+                tableView.reloadData()
+            } catch {
+                let errorLabel = UILabel()
+                errorLabel.text = "Something went wrong"
+                tableView.backgroundView = errorLabel
+            }
         }
     }
 
