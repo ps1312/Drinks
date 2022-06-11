@@ -27,9 +27,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func configureView() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let drinksViewControler = storyboard.instantiateViewController(withIdentifier: "DrinksViewController") as! DrinksViewController
-        drinksViewControler.getDrinks = remoteGetDrinks
-        window?.rootViewController = drinksViewControler
+        let navController = storyboard.instantiateInitialViewController() as! UINavigationController
+        let drinksViewController = navController.topViewController as! DrinksViewController
+        drinksViewController.getDrinks = remoteGetDrinks
+
+        window?.rootViewController = navController
     }
 
 
