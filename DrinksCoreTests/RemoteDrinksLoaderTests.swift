@@ -31,68 +31,29 @@ class RemoteDrinksLoaderTests: XCTestCase {
         let (sut, httpClient) = makeSUT()
         httpClient.failing = true
 
-        var result: Result<[Drink], RemoteDrinksLoader.Error>? = nil
-        sut.load { result = $0 }
-
-        switch (result) {
-        case .failure(let err):
-            XCTAssertEqual(err, .request)
-        default:
-            XCTFail("Expected result to be a failure with .request error")
-        }
+        assertResult(sut, result: .failure(.request))
     }
 
     func test_load_returnsDecoderErrorOnInvalidJSON() {
         let (sut, httpClient) = makeSUT()
         httpClient.response = "invalid json".data(using: .utf8)!
 
-        var result: Result<[Drink], RemoteDrinksLoader.Error>? = nil
-        sut.load { result = $0 }
-
-        switch (result) {
-        case .failure(let err):
-            XCTAssertEqual(err, .decoder)
-        default:
-            XCTFail("Expected result to be a failure with .request error")
-        }
+        assertResult(sut, result: .failure(.decoder))
     }
 
     func test_load_returnsEmptyArrayOnEmptyJSON() {
-        let (sut,_) = makeSUT()
+        let (sut, _) = makeSUT()
 
-        var result: Result<[Drink], RemoteDrinksLoader.Error>? = nil
-        sut.load { result = $0 }
-
-        switch (result) {
-        case .success(let drinks):
-            XCTAssertEqual(drinks, [Drink]())
-        default:
-            XCTFail("Expected result to be a success with an empty array")
-        }
+        assertResult(sut, result: .success([Drink]()))
     }
 
     func test_load_returnsDrinksOnValidNonEmptyResponse() async throws {
-        let drink1 = Drink(id: 0, name: "name 1", thumb: URL(string: "https://www.any-url.com/image1")!)
-        let drink2 = Drink(id: 1, name: "name 2", thumb: URL(string: "https://www.any-url.com/image2")!)
+        let (drinks, json) = makeDrinkSubject(size: 3)
+
         let (sut, httpClient) = makeSUT()
-        httpClient.response = """
-        {
-            "drinks": [
-                {"strDrink":"name 1","strDrinkThumb":"https://www.any-url.com/image1","idDrink":"0"},
-                {"strDrink":"name 2","strDrinkThumb":"https://www.any-url.com/image2","idDrink":"1"}
-            ]
-        }
-        """.data(using: .utf8)!
+        httpClient.response = json
 
-        var result: Result<[Drink], RemoteDrinksLoader.Error>? = nil
-        sut.load { result = $0 }
-
-        switch (result) {
-        case .success(let drinks):
-            XCTAssertEqual(drinks, [drink1, drink2])
-        default:
-            XCTFail("Expected result to be a success with an empty array")
-        }
+        assertResult(sut, result: .success(drinks))
     }
 
     func makeSUT(url: URL = URL(string: "https://www.any-url.com")!) -> (sut: RemoteDrinksLoader, httpClient: HTTPClientSpy) {
@@ -100,6 +61,39 @@ class RemoteDrinksLoaderTests: XCTestCase {
         let sut = RemoteDrinksLoader(url: url, httpClient: httpClient)
 
         return (sut, httpClient)
+    }
+
+    func assertResult(_ sut: RemoteDrinksLoader, result expectedResult: Result<[Drink], RemoteDrinksLoader.Error>) {
+        var capturedResult: Result<[Drink], RemoteDrinksLoader.Error>? = nil
+        sut.load { capturedResult = $0 }
+
+        switch (capturedResult, expectedResult) {
+        case let (.failure(capturedError), .failure(expectedError)):
+            XCTAssertEqual(capturedError, expectedError)
+        case let (.success(capturedDrinks), .success(expectedDrinks)):
+            XCTAssertEqual(capturedDrinks, expectedDrinks)
+        default:
+            XCTFail("Captured and expected results should be same, instead got captured: \(String(describing: capturedResult)), expected: \(String(describing: expectedResult))")
+        }
+    }
+
+    func makeDrinkSubject(size: Int = 2) -> ([Drink], Data) {
+        var models = [Drink]()
+        var partialJSON = ""
+
+        for i in 1...size {
+            let model = Drink(id: i, name: "name \(i)", thumb: URL(string: "https://www.any-url.com/image\(i)")!)
+            models.append(model)
+            partialJSON += "{\"strDrink\":\"\(model.name)\",\"strDrinkThumb\":\"\(model.thumb)\",\"idDrink\":\"\(model.id)\"}"
+
+            if (i < size) {
+                partialJSON += ","
+            }
+        }
+
+        let responseJSON = "{\"drinks\":[\(partialJSON)]}"
+
+        return (models, json: responseJSON.data(using: .utf8)!)
     }
 }
 
