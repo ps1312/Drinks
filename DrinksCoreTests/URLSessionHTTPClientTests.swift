@@ -20,24 +20,41 @@ class URLSessionHTTPClientTests: XCTestCase {
         URLProtocol.unregisterClass(URLProtocolStub.self)
     }
 
-    func testMakesRequestWithCorrectURL() async {
+    func testMakesRequestWithCorrectURL() {
+        let exp = XCTestExpectation(description: "Waiting for client completion to be called...")
+
         let expectedUrl = URL(string: "https://www.specific-url.com")!
         let client = URLSessionHTTPClient()
 
-        let _ = try? await client.get(expectedUrl)
+        client.get(from: expectedUrl) { _ in exp.fulfill() }
+
+        wait(for: [exp], timeout: 0.1)
 
         XCTAssertEqual(URLProtocolStub.request?.url, expectedUrl)
     }
 
     func testReturnsDataWhenRequestCompletes() async {
+        let exp = XCTestExpectation(description: "Waiting for client completion to be called...")
+
         let expectedResult = String("expected response data").data(using: .utf8)!
         URLProtocolStub.mockData = expectedResult
 
         let client = URLSessionHTTPClient()
 
-        let result = try? await client.get(URL(string: "https://www.any-url.com")!)
+        var capturedResult: Result<Data, Error>? = nil
+        client.get(from: URL(string: "https://www.any-url.com")!) { result in
+            capturedResult = result
+            exp.fulfill()
+        }
 
-        XCTAssertEqual(result, expectedResult)
+        wait(for: [exp], timeout: 0.1)
+
+        switch (capturedResult) {
+        case .success(let data):
+            XCTAssertEqual(data, expectedResult)
+        default:
+            XCTFail("Expected result to be a success with specific data")
+        }
     }
 
 }

@@ -12,7 +12,7 @@ public protocol DrinksLoader {
 }
 
 public protocol HTTPClient {
-    func get(_ url: URL) async throws -> Data
+    func get(from url: URL, completion: @escaping (Result<Data, Error>) -> Void) -> Void
 }
 
 public struct Drink: Equatable {

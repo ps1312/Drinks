@@ -14,8 +14,16 @@ public class URLSessionHTTPClient: HTTPClient {
         self.urlSession = urlSession
     }
 
-    public func get(_ url: URL) async throws -> Data {
-        let (data, _) = try await urlSession.data(from: url)
-        return data
+    public func get(from url: URL, completion: @escaping (Result<Data, Error>) -> Void) {
+        let task = urlSession.dataTask(with: url) { data, response, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+
+            completion(.success(data ?? Data()))
+        }
+
+        task.resume()
     }
 }

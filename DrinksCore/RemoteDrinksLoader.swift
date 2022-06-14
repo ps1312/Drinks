@@ -21,7 +21,7 @@ public class RemoteDrinksLoader {
         case decoder
     }
 
-    public func load(completion: (Result<[Drink], Error>) -> Void) {
+    public func load(completion: @escaping (Result<[Drink], Error>) -> Void) {
         httpClient.get(from: url) { result in
             switch (result) {
             case .failure:

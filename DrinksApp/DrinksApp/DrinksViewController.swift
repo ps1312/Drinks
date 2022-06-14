@@ -8,7 +8,7 @@
 import UIKit
 import DrinksCore
 
-typealias GetDrinks = (([Drink]) -> Void) -> Void
+typealias GetDrinks = (@escaping ([Drink]) -> Void) -> Void
 
 class DrinksViewController: UITableViewController {
     var drinks = [Drink]()
@@ -23,8 +23,8 @@ class DrinksViewController: UITableViewController {
         refreshControl = refreshControler
 
         refreshControler.beginRefreshing()
-        getDrinks? { items in
-            drinks = items
+        getDrinks? { [weak self] items in
+            self?.drinks = items
             refreshControler.endRefreshing()
         }
     }
