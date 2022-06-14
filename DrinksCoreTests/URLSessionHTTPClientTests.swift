@@ -11,8 +11,6 @@ import DrinksCore
 class URLSessionHTTPClientTests: XCTestCase {
 
     override func setUp() {
-        URLProtocolStub.request = nil
-        URLProtocolStub.mockData = nil
         URLProtocol.registerClass(URLProtocolStub.self)
     }
 
@@ -24,25 +22,26 @@ class URLSessionHTTPClientTests: XCTestCase {
         let exp = XCTestExpectation(description: "Waiting for client completion to be called...")
 
         let expectedUrl = URL(string: "https://www.specific-url.com")!
-        let client = URLSessionHTTPClient()
+        let sut = URLSessionHTTPClient()
 
-        client.get(from: expectedUrl) { _ in exp.fulfill() }
+        sut.get(from: expectedUrl) { _ in exp.fulfill() }
 
         wait(for: [exp], timeout: 0.1)
 
-        XCTAssertEqual(URLProtocolStub.request?.url, expectedUrl)
+        XCTAssertEqual(URLProtocolStub.lastRequest?.url, expectedUrl)
     }
 
-    func test_get_returnsDataOnTaskSuccess() async {
+    func test_get_returnsDataOnTaskSuccess() {
         let exp = XCTestExpectation(description: "Waiting for client completion to be called...")
 
         let expectedResult = String("expected response data").data(using: .utf8)!
-        URLProtocolStub.mockData = expectedResult
 
-        let client = URLSessionHTTPClient()
+        URLProtocolStub.stub = (data: expectedResult, response: nil, error: nil)
+
+        let sut = URLSessionHTTPClient()
 
         var capturedResult: Result<Data, Error>? = nil
-        client.get(from: URL(string: "https://www.any-url.com")!) { result in
+        sut.get(from: URL(string: "https://www.any-url.com")!) { result in
             capturedResult = result
             exp.fulfill()
         }
@@ -61,22 +60,18 @@ class URLSessionHTTPClientTests: XCTestCase {
 
 
 class URLProtocolStub: URLProtocol {
-    static var request: URLRequest? = nil
-    static var mockData: Data? = nil
+    static var lastRequest: URLRequest? = nil
+    static var stub: (data: Data?, response: URLResponse?, error: Error?)? = nil
 
     override class func canInit(with request: URLRequest) -> Bool { return true }
 
     override class func canonicalRequest(for request: URLRequest) -> URLRequest { return request }
 
     override func startLoading() {
-        URLProtocolStub.request = request
+        URLProtocolStub.lastRequest = request
 
-        if (URLProtocolStub.mockData != nil) {
-            let urlResponse = URLResponse(url: request.url!, mimeType: "", expectedContentLength: 0, textEncodingName: "")
-            client?.urlProtocol(self, didReceive: urlResponse, cacheStoragePolicy: .notAllowed)
-            client?.urlProtocol(self, didLoad: URLProtocolStub.mockData!)
-        } else {
-            client?.urlProtocol(self, didFailWithError: anyError)
+        if let data = URLProtocolStub.stub?.data {
+            client?.urlProtocol(self, didLoad: data)
         }
 
         client?.urlProtocolDidFinishLoading(self)
