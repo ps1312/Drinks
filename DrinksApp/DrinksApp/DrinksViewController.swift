@@ -8,31 +8,24 @@
 import UIKit
 import DrinksCore
 
-let SCREEN_TITLE = "Drinks 🍸"
+typealias GetDrinks = (([Drink]) -> Void) -> Void
 
 class DrinksViewController: UITableViewController {
     var drinks = [Drink]()
-    var getDrinks: (() async throws -> [Drink])!
+    var getDrinks: GetDrinks?
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        title = SCREEN_TITLE
-        
-        let loadingIndicator = UIActivityIndicatorView()
-        loadingIndicator.startAnimating()
-        tableView.backgroundView = loadingIndicator
+        title = "Drinks 🍸"
 
-        Task {
-            do {
-                drinks = try await getDrinks()
-                tableView.backgroundView = nil
-                tableView.reloadData()
-            } catch {
-                let errorLabel = UILabel()
-                errorLabel.text = "Something went wrong"
-                tableView.backgroundView = errorLabel
-            }
+        let refreshControler = UIRefreshControl()
+        refreshControl = refreshControler
+
+        refreshControler.beginRefreshing()
+        getDrinks? { items in
+            drinks = items
+            refreshControler.endRefreshing()
         }
     }
 
@@ -40,20 +33,9 @@ class DrinksViewController: UITableViewController {
         let drink = drinks[indexPath.row]
         let drinkCell = tableView.dequeueReusableCell(withIdentifier: "DrinkListItem", for: indexPath) as! DrinkListItem
         drinkCell.nameLabel.text = drink.name
-        drinkCell.thumbnailImage.image = UIImage.imageWithColor(color: .cyan, size: CGSize(width: 200, height: 200))
         return drinkCell
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { return drinks.count }
 }
 
-extension UIImage {
-    class func imageWithColor(color: UIColor, size: CGSize=CGSize(width: 1, height: 1)) -> UIImage {
-        UIGraphicsBeginImageContextWithOptions(size, false, 0)
-        color.setFill()
-        UIRectFill(CGRect(origin: CGPoint.zero, size: size))
-        let image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return image!
-    }
-}
