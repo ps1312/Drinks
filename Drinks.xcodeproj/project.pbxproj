@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3A77925028591E4800C76D50 /* SharedHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A77924F28591E4800C76D50 /* SharedHelpers.swift */; };
 		3AAE10C6285009990013C555 /* DrinksCoreIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AAE10C5285009990013C555 /* DrinksCoreIntegrationTests.swift */; };
 		3AAE10C7285009990013C555 /* DrinksCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AD686F4284E962F00D6B889 /* DrinksCore.framework */; };
 		3AAE10CE28500A0F0013C555 /* URLSessionHTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AAE10CD28500A0F0013C555 /* URLSessionHTTPClient.swift */; };
@@ -46,16 +47,10 @@
 			remoteGlobalIDString = 3AF203A428501D0800B3F93A;
 			remoteInfo = DrinksAppTests;
 		};
-		3AF203CB28501D0900B3F93A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 3AF203C128501D0900B3F93A /* DrinksApp.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 3AF203AE28501D0900B3F93A;
-			remoteInfo = DrinksAppUITests;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3A77924F28591E4800C76D50 /* SharedHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedHelpers.swift; sourceTree = "<group>"; };
 		3AAE10C3285009990013C555 /* DrinksCoreIntegrationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DrinksCoreIntegrationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AAE10C5285009990013C555 /* DrinksCoreIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinksCoreIntegrationTests.swift; sourceTree = "<group>"; };
 		3AAE10CD28500A0F0013C555 /* URLSessionHTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionHTTPClient.swift; sourceTree = "<group>"; };
@@ -137,6 +132,7 @@
 		3AD68700284E962F00D6B889 /* DrinksCoreTests */ = {
 			isa = PBXGroup;
 			children = (
+				3A77924F28591E4800C76D50 /* SharedHelpers.swift */,
 				3AD68701284E962F00D6B889 /* RemoteDrinksLoaderTests.swift */,
 				3AD68712284ED3D900D6B889 /* URLSessionHTTPClientTests.swift */,
 			);
@@ -148,7 +144,6 @@
 			children = (
 				3AF203C828501D0900B3F93A /* DrinksApp.app */,
 				3AF203CA28501D0900B3F93A /* DrinksAppTests.xctest */,
-				3AF203CC28501D0900B3F93A /* DrinksAppUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -283,13 +278,6 @@
 			remoteRef = 3AF203C928501D0900B3F93A /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		3AF203CC28501D0900B3F93A /* DrinksAppUITests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = DrinksAppUITests.xctest;
-			remoteRef = 3AF203CB28501D0900B3F93A /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -341,6 +329,7 @@
 			files = (
 				3AD68702284E962F00D6B889 /* RemoteDrinksLoaderTests.swift in Sources */,
 				3AD68713284ED3D900D6B889 /* URLSessionHTTPClientTests.swift in Sources */,
+				3A77925028591E4800C76D50 /* SharedHelpers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

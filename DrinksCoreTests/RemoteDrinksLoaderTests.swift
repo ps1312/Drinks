@@ -9,14 +9,15 @@ import XCTest
 import DrinksCore
 
 class RemoteDrinksLoaderTests: XCTestCase {
-    func testDoesNotMakeRequestsOnInit() {
+    func test_init_doesNotMakeRequests() {
         let httpClientSpy = HTTPClientSpy()
+
         let _ = makeSUT()
 
         XCTAssertEqual(httpClientSpy.requests.count, 0)
     }
 
-    func testMakeRequestsWithProvidedUrlOnLoad() {
+    func test_load_makeRequestWithUrl() {
         let expectedUrl = URL(string: "https://www.any-url.com")!
 
         let (sut, httpClient) = makeSUT(url: expectedUrl)
@@ -26,7 +27,7 @@ class RemoteDrinksLoaderTests: XCTestCase {
         XCTAssertEqual(httpClient.requests, [expectedUrl])
     }
 
-    func testReturnsErrorOnRequestFailure() {
+    func test_load_returnsRequestErrorOnHTTPClientFailure() {
         let (sut, httpClient) = makeSUT()
         httpClient.failing = true
 
@@ -41,7 +42,7 @@ class RemoteDrinksLoaderTests: XCTestCase {
         }
     }
 
-    func testReturnsDecoderErrorOnInvalidJSON() {
+    func test_load_returnsDecoderErrorOnInvalidJSON() {
         let (sut, httpClient) = makeSUT()
         httpClient.response = "invalid json".data(using: .utf8)!
 
@@ -56,7 +57,7 @@ class RemoteDrinksLoaderTests: XCTestCase {
         }
     }
 
-    func testReturnsEmptyArrayOnRequestSuccess() {
+    func test_load_returnsEmptyArrayOnEmptyJSON() {
         let (sut,_) = makeSUT()
 
         var result: Result<[Drink], RemoteDrinksLoader.Error>? = nil
@@ -70,7 +71,7 @@ class RemoteDrinksLoaderTests: XCTestCase {
         }
     }
 
-    func testReturnsDrinksArrayWhenRequestCompletesWithData() async throws {
+    func test_load_returnsDrinksOnValidNonEmptyResponse() async throws {
         let drink1 = Drink(id: 0, name: "name 1", thumb: URL(string: "https://www.any-url.com/image1")!)
         let drink2 = Drink(id: 1, name: "name 2", thumb: URL(string: "https://www.any-url.com/image2")!)
         let (sut, httpClient) = makeSUT()
@@ -111,7 +112,7 @@ class HTTPClientSpy: HTTPClient {
         requests.append(url)
 
         if (failing) {
-            completion(.failure(NSError(domain: "domain", code: 0)))
+            completion(.failure(anyError))
             return
         }
 

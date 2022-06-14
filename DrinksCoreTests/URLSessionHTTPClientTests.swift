@@ -20,7 +20,7 @@ class URLSessionHTTPClientTests: XCTestCase {
         URLProtocol.unregisterClass(URLProtocolStub.self)
     }
 
-    func testMakesRequestWithCorrectURL() {
+    func test_get_makesRequestWithCorrectURL() {
         let exp = XCTestExpectation(description: "Waiting for client completion to be called...")
 
         let expectedUrl = URL(string: "https://www.specific-url.com")!
@@ -33,7 +33,7 @@ class URLSessionHTTPClientTests: XCTestCase {
         XCTAssertEqual(URLProtocolStub.request?.url, expectedUrl)
     }
 
-    func testReturnsDataWhenRequestCompletes() async {
+    func test_get_returnsDataOnTaskSuccess() async {
         let exp = XCTestExpectation(description: "Waiting for client completion to be called...")
 
         let expectedResult = String("expected response data").data(using: .utf8)!
@@ -76,7 +76,7 @@ class URLProtocolStub: URLProtocol {
             client?.urlProtocol(self, didReceive: urlResponse, cacheStoragePolicy: .notAllowed)
             client?.urlProtocol(self, didLoad: URLProtocolStub.mockData!)
         } else {
-            client?.urlProtocol(self, didFailWithError: NSError(domain: "any domain", code: 1))
+            client?.urlProtocol(self, didFailWithError: anyError)
         }
 
         client?.urlProtocolDidFinishLoading(self)
