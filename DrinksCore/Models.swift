@@ -7,9 +7,7 @@
 
 import Foundation
 
-public protocol DrinksLoader {
-    func load() async throws -> [Drink]
-}
+public typealias DrinksLoader = (@escaping (Result<[Drink], Error>) -> Void) -> Void
 
 public protocol HTTPClient {
     func get(from url: URL, completion: @escaping (Result<Data, Error>) -> Void) -> Void

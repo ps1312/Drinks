@@ -8,23 +8,22 @@
 import UIKit
 import DrinksCore
 
-typealias GetDrinks = (@escaping ([Drink]) -> Void) -> Void
-
 class DrinksViewController: UITableViewController {
     var drinks = [Drink]()
-    var getDrinks: GetDrinks?
+    var getDrinks: DrinksLoader?
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        title = "Drinks 🍸"
+        title = "Drinks 😁🍸"
 
         let refreshControler = UIRefreshControl()
         refreshControl = refreshControler
-
         refreshControler.beginRefreshing()
+
         getDrinks? { [weak self] items in
-            self?.drinks = items
+            self?.drinks = try! items.get()
+            self?.tableView.reloadData()
             refreshControler.endRefreshing()
         }
     }

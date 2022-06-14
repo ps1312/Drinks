@@ -8,14 +8,6 @@
 import UIKit
 import DrinksCore
 
-func remoteGetDrinks() async throws -> [Drink] {
-    let httpClient = URLSessionHTTPClient()
-    let url = URL(string: "https://pssr.dev/drinks.json")!
-    let remoteDrinksLoader = RemoteDrinksLoader(url: url, httpClient: httpClient)
-
-    return try await remoteDrinksLoader.load()
-}
-
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
@@ -26,12 +18,24 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func configureView() {
+        let httpClient = URLSessionHTTPClient()
+        let url = URL(string: "https://pssr.dev/drinks.json")!
+        let remoteDrinksLoader = RemoteDrinksLoader(url: url, httpClient: httpClient)
+
+
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let navController = storyboard.instantiateInitialViewController() as! UINavigationController
         let drinksViewController = navController.topViewController as! DrinksViewController
-        drinksViewController.getDrinks = remoteGetDrinks
+        drinksViewController.getDrinks = { completion in
+            remoteDrinksLoader.load { result in
+                DispatchQueue.main.async {
+                    completion(result)
+                }
+            }
+        }
 
         window?.rootViewController = navController
+        window?.makeKeyAndVisible()
     }
 
 

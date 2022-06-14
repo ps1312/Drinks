@@ -22,25 +22,25 @@ class DrinksAppTests: XCTestCase {
         XCTAssertEqual(count, 1)
     }
 
-    func test_viewDidLoad_displaysLoadingWhileGettingDrinks() throws {
+    func test_viewDidLoad_displaysLoadingWhileGettingDrinks() {
         let sut = makeSUT()
 
         sut.loadViewIfNeeded()
 
-        XCTAssertTrue(try sut.isLoading())
+        XCTAssertTrue(sut.isLoading())
     }
 
-    func test_viewDidLoad_displaysAvailableDrinks() throws {
+    func test_viewDidLoad_displaysAvailableDrinks() {
         let sut = makeSUT()
 
         let drink1 = Drink(id: 0, name: "name 0", thumb: URL(string: "https://url0.com")!)
         let drink2 = Drink(id: 1, name: "name 1", thumb: URL(string: "https://url1.com")!)
         let expectedDrinks = [drink1, drink2]
-        sut.getDrinks = { completion in completion(expectedDrinks) }
+        sut.getDrinks = { completion in completion(.success(expectedDrinks)) }
 
         sut.loadViewIfNeeded()
 
-        XCTAssertFalse(try sut.isLoading())
+        XCTAssertFalse(sut.isLoading())
         XCTAssertEqual(sut.numberOfDrinks(), expectedDrinks.count)
         for i in 0...expectedDrinks.count - 1 {
             XCTAssertEqual(sut.name(atRow: i), expectedDrinks[i].name)
@@ -61,8 +61,8 @@ class DrinksAppTests: XCTestCase {
 private extension DrinksViewController {
     func numberOfDrinks() -> Int { tableView.numberOfRows(inSection: drinksSection) }
 
-    func isLoading() throws -> Bool {
-        let refreshControl = try XCTUnwrap(tableView.refreshControl, "View is missing UIRefreshControl")
+    func isLoading() -> Bool {
+        guard let refreshControl = try? XCTUnwrap(tableView.refreshControl, "View is missing UIRefreshControl") else { return false }
         return refreshControl.isRefreshing
     }
 
