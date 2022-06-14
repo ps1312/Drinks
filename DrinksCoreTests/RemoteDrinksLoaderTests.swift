@@ -16,45 +16,58 @@ class RemoteDrinksLoaderTests: XCTestCase {
         XCTAssertEqual(httpClientSpy.requests.count, 0)
     }
 
-    func testMakeRequestsWithProvidedUrlOnLoad() async throws {
+    func testMakeRequestsWithProvidedUrlOnLoad() {
         let expectedUrl = URL(string: "https://www.any-url.com")!
+
         let (sut, httpClient) = makeSUT(url: expectedUrl)
 
-        let _ = try await sut.load()
+        sut.load { _ in }
 
         XCTAssertEqual(httpClient.requests, [expectedUrl])
     }
 
-    func testReturnsErrorOnRequestFailure() async {
+    func testReturnsErrorOnRequestFailure() {
         let (sut, httpClient) = makeSUT()
         httpClient.failing = true
 
-        do {
-            let _ = try await sut.load()
-        } catch {
-            let capturedError = error as? RemoteDrinksLoader.Error
-            XCTAssertEqual(capturedError, .request)
+        var result: Result<[Drink], RemoteDrinksLoader.Error>? = nil
+        sut.load { result = $0 }
+
+        switch (result) {
+        case .failure(let err):
+            XCTAssertEqual(err, .request)
+        default:
+            XCTFail("Expected result to be a failure with .request error")
         }
     }
 
-    func testReturnsDecoderErrorOnInvalidJSON() async {
+    func testReturnsDecoderErrorOnInvalidJSON() {
         let (sut, httpClient) = makeSUT()
         httpClient.response = "invalid json".data(using: .utf8)!
 
-        do {
-            let _ = try await sut.load()
-        } catch {
-            let capturedError = error as? RemoteDrinksLoader.Error
-            XCTAssertEqual(capturedError, .decoder)
+        var result: Result<[Drink], RemoteDrinksLoader.Error>? = nil
+        sut.load { result = $0 }
+
+        switch (result) {
+        case .failure(let err):
+            XCTAssertEqual(err, .decoder)
+        default:
+            XCTFail("Expected result to be a failure with .request error")
         }
     }
 
-    func testReturnsEmptyArrayOnRequestSuccess() async throws {
+    func testReturnsEmptyArrayOnRequestSuccess() {
         let (sut,_) = makeSUT()
 
-        let result = try await sut.load()
+        var result: Result<[Drink], RemoteDrinksLoader.Error>? = nil
+        sut.load { result = $0 }
 
-        XCTAssertEqual(result.count, 0)
+        switch (result) {
+        case .success(let drinks):
+            XCTAssertEqual(drinks, [Drink]())
+        default:
+            XCTFail("Expected result to be a success with an empty array")
+        }
     }
 
     func testReturnsDrinksArrayWhenRequestCompletesWithData() async throws {
@@ -70,9 +83,15 @@ class RemoteDrinksLoaderTests: XCTestCase {
         }
         """.data(using: .utf8)!
 
-        let result = try await sut.load()
+        var result: Result<[Drink], RemoteDrinksLoader.Error>? = nil
+        sut.load { result = $0 }
 
-        XCTAssertEqual(result, [drink1, drink2])
+        switch (result) {
+        case .success(let drinks):
+            XCTAssertEqual(drinks, [drink1, drink2])
+        default:
+            XCTFail("Expected result to be a success with an empty array")
+        }
     }
 
     func makeSUT(url: URL = URL(string: "https://www.any-url.com")!) -> (sut: RemoteDrinksLoader, httpClient: HTTPClientSpy) {
@@ -88,9 +107,14 @@ class HTTPClientSpy: HTTPClient {
     var failing: Bool = false
     var response = String("{\"drinks\": []}").data(using: .utf8)!
 
-    func get(_ url: URL) throws -> Data {
+    func get(from url: URL, completion: (Result<Data, Error>) -> Void) {
         requests.append(url)
-        if (failing) { throw NSError(domain: "any domain", code: 1) }
-        return response
+
+        if (failing) {
+            completion(.failure(NSError(domain: "domain", code: 0)))
+            return
+        }
+
+        completion(.success(response))
     }
 }

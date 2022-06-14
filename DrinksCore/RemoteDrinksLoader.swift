@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class RemoteDrinksLoader: DrinksLoader {
+public class RemoteDrinksLoader {
     private let url: URL
     private let httpClient: HTTPClient
 
@@ -21,15 +21,21 @@ public class RemoteDrinksLoader: DrinksLoader {
         case decoder
     }
 
-    public func load() async throws -> [Drink] {
-        do {
-            let data = try await httpClient.get(url)
-            let result = try JSONDecoder().decode(ApiDrinksResult.self, from: data)
-            return result.drinks.map { Drink(id: Int($0.idDrink)!, name: $0.strDrink, thumb: URL(string: $0.strDrinkThumb)!) }
-        } catch DecodingError.dataCorrupted {
-            throw Error.decoder
-        } catch {
-            throw Error.request
+    public func load(completion: (Result<[Drink], Error>) -> Void) {
+        httpClient.get(from: url) { result in
+            switch (result) {
+            case .failure:
+                completion(.failure(.request))
+            case .success(let data):
+                do {
+                    let apiResult = try JSONDecoder().decode(ApiDrinksResult.self, from: data)
+                    let drinks = apiResult.drinks.map { Drink(id: Int($0.idDrink)!, name: $0.strDrink, thumb: URL(string: $0.strDrinkThumb)!) }
+
+                    completion(.success(drinks))
+                } catch {
+                    completion(.failure(.decoder))
+                }
+            }
         }
     }
 }
