@@ -8,25 +8,6 @@
 import XCTest
 import DrinksCore
 
-class RemoteImageLoader {
-    private let httpClient: HTTPClient
-
-    init (httpClient: HTTPClient) {
-        self.httpClient = httpClient
-    }
-
-    func load(imageFromURL url: URL, completion: @escaping (Result<Data, Error>) -> Void) {
-        httpClient.get(from: url) { result in
-            switch (result) {
-            case .failure:
-                completion(.failure(CoreError.request))
-            case .success(let imageData):
-                completion(.success(imageData))
-            }
-        }
-    }
-}
-
 class RemoteImageLoaderTests: XCTestCase {
     func test_imageLoader_makesRequestForImage() {
         let (sut, httpClient) = makeSUT()
@@ -52,7 +33,7 @@ class RemoteImageLoaderTests: XCTestCase {
         assertResult(sut, expectedResult: .success(expectedData))
     }
 
-    func assertResult(_ sut: RemoteImageLoader, expectedResult: Result<Data, Error>) {
+    func assertResult(_ sut: RemoteImageLoader, expectedResult: DataResult) {
         var capturedResult: Result<Data, Error>? = nil
         sut.load(imageFromURL: anyURL) { capturedResult = $0 }
 

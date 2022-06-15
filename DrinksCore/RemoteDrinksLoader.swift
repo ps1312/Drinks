@@ -11,12 +11,14 @@ public class RemoteDrinksLoader {
     private let url: URL
     private let httpClient: HTTPClient
 
+    public typealias CompletionResult = Result<[Drink], Error>
+
     public init(url: URL, httpClient: HTTPClient) {
         self.url = url
         self.httpClient = httpClient
     }
 
-    public func load(completion: @escaping (Result<[Drink], Error>) -> Void) {
+    public func load(completion: @escaping (CompletionResult) -> Void) {
         httpClient.get(from: url) { result in
             switch (result) {
             case .failure:

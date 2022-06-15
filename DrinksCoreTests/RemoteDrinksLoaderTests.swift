@@ -63,13 +63,13 @@ class RemoteDrinksLoaderTests: XCTestCase {
         return (sut, httpClient)
     }
 
-    func assertResult(_ sut: RemoteDrinksLoader, result expectedResult: Result<[Drink], CoreError>) {
+    func assertResult(_ sut: RemoteDrinksLoader, result expectedResult: RemoteDrinksLoader.CompletionResult) {
         var capturedResult: Result<[Drink], Error>? = nil
         sut.load { capturedResult = $0 }
 
         switch (capturedResult, expectedResult) {
         case let (.failure(capturedError), .failure(expectedError)):
-            XCTAssertEqual(capturedError as? CoreError, expectedError)
+            XCTAssertEqual(capturedError as? CoreError, expectedError as? CoreError)
         case let (.success(capturedDrinks), .success(expectedDrinks)):
             XCTAssertEqual(capturedDrinks, expectedDrinks)
         default:
