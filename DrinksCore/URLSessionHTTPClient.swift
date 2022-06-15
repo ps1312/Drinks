@@ -10,18 +10,19 @@ import Foundation
 public class URLSessionHTTPClient: HTTPClient {
     private let urlSession: URLSession
 
-    public enum Error: Swift.Error {
-        case unexpected
-    }
-
     public init(urlSession: URLSession = URLSession.shared) {
         self.urlSession = urlSession
     }
 
     public func get(from url: URL, completion: @escaping (Result<Data, Swift.Error>) -> Void) {
         let task = urlSession.dataTask(with: url) { data, response, error in
+            if data == Data() && response == nil && error == nil {
+                completion(.failure(CoreError.request))
+                return
+            }
+
             if error != nil {
-                completion(.failure(URLSessionHTTPClient.Error.unexpected))
+                completion(.failure(CoreError.request))
                 return
             }
 

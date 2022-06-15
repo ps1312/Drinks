@@ -31,30 +31,16 @@ class URLSessionHTTPClientTests: XCTestCase {
         XCTAssertEqual(URLProtocolStub.lastRequest?.url, expectedUrl)
     }
 
-    func test_get_returnsUnexpectedErrorOnRequestFailure() {
-        let exp = XCTestExpectation(description: "Waiting for client completion to be called...")
-
-        URLProtocolStub.stub = (data: nil, response: nil, error: anyError)
-
-        let sut = URLSessionHTTPClient()
-
-        var capturedResult: Result<Data, Error>? = nil
-        sut.get(from: anyURL) { result in
-            capturedResult = result
-            exp.fulfill()
-        }
-
-        wait(for: [exp], timeout: 0.1)
-
-        switch (capturedResult) {
-        case .failure(let error):
-            XCTAssertEqual(error as? URLSessionHTTPClient.Error, .unexpected)
-        default:
-            XCTFail("Expected result to be a failute with \(URLSessionHTTPClient.Error.unexpected)")
-        }
+    func test_get_returnsErrorOnInvalidCases() {
+        assertInvalidCase(stub: (data: nil, response: nil, error: nil))
+        assertInvalidCase(stub: (data: anyData, response: nil, error: nil))
+        assertInvalidCase(stub: (data: nil, response: anyHTTPURLResponse, error: anyError))
+        assertInvalidCase(stub: (data: anyData, response: nil, error: anyError))
+        assertInvalidCase(stub: (data: anyData, response: anyHTTPURLResponse, error: anyError))
+        assertInvalidCase(stub: (data: nil, response: nil, error: anyError))
     }
 
-    func test_get_returnsDataOnTaskSuccess() {
+    func test_get_returnsDataWhenRequestSucceeds() {
         let exp = XCTestExpectation(description: "Waiting for client completion to be called...")
 
         let expectedResult = String("expected response data").data(using: .utf8)!
@@ -79,15 +65,36 @@ class URLSessionHTTPClientTests: XCTestCase {
         }
     }
 
+    func assertInvalidCase(stub: URLProtocolStub.Stub) {
+        let exp = XCTestExpectation(description: "Waiting for client completion to be called...")
+
+        URLProtocolStub.stub = (data: stub.data, response: stub.response, error: stub.error)
+
+        let sut = URLSessionHTTPClient()
+
+        var capturedResult: Result<Data, Error>? = nil
+        sut.get(from: anyURL) { result in
+            capturedResult = result
+            exp.fulfill()
+        }
+
+        wait(for: [exp], timeout: 0.1)
+
+        switch (capturedResult) {
+        case .failure(let error):
+            XCTAssertEqual(error as? CoreError, CoreError.request)
+        default:
+            XCTFail("Expected result to be a failure with \(CoreError.request)")
+        }
+    }
 }
 
 
 class URLProtocolStub: URLProtocol {
-    static var lastRequest: URLRequest? = nil
-
-    public typealias Stub = (data: Data?, response: URLResponse?, error: Error?)
+    typealias Stub = (data: Data?, response: URLResponse?, error: Error?)
 
     static var stub: Stub? = nil
+    static var lastRequest: URLRequest? = nil
 
     override class func canInit(with request: URLRequest) -> Bool { return true }
 
