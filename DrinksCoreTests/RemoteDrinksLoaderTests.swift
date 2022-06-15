@@ -31,14 +31,14 @@ class RemoteDrinksLoaderTests: XCTestCase {
         let (sut, httpClient) = makeSUT()
         httpClient.failing = true
 
-        assertResult(sut, result: .failure(RemoteDrinksLoader.Error.request))
+        assertResult(sut, result: .failure(CoreError.request))
     }
 
     func test_load_returnsDecoderErrorOnInvalidJSON() {
         let (sut, httpClient) = makeSUT()
         httpClient.response = "invalid json".data(using: .utf8)!
 
-        assertResult(sut, result: .failure(RemoteDrinksLoader.Error.decoder))
+        assertResult(sut, result: .failure(CoreError.decoder))
     }
 
     func test_load_returnsEmptyArrayOnEmptyJSON() {
@@ -63,13 +63,13 @@ class RemoteDrinksLoaderTests: XCTestCase {
         return (sut, httpClient)
     }
 
-    func assertResult(_ sut: RemoteDrinksLoader, result expectedResult: Result<[Drink], RemoteDrinksLoader.Error>) {
+    func assertResult(_ sut: RemoteDrinksLoader, result expectedResult: Result<[Drink], CoreError>) {
         var capturedResult: Result<[Drink], Error>? = nil
         sut.load { capturedResult = $0 }
 
         switch (capturedResult, expectedResult) {
         case let (.failure(capturedError), .failure(expectedError)):
-            XCTAssertEqual(capturedError as? RemoteDrinksLoader.Error, expectedError)
+            XCTAssertEqual(capturedError as? CoreError, expectedError)
         case let (.success(capturedDrinks), .success(expectedDrinks)):
             XCTAssertEqual(capturedDrinks, expectedDrinks)
         default:

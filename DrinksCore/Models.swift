@@ -14,6 +14,12 @@ public protocol HTTPClient {
     func get(from url: URL, completion: @escaping (Result<Data, Error>) -> Void)
 }
 
+
+public enum CoreError: Error {
+    case request
+    case decoder
+}
+
 public struct Drink: Equatable {
     public let id: Int
     public let name: String

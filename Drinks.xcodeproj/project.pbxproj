@@ -127,9 +127,9 @@
 			isa = PBXGroup;
 			children = (
 				3AD6870C284E96D800D6B889 /* Models.swift */,
+				3A60210D285A08290090D626 /* RemoteImageLoader.swift */,
 				3AD6870E284ED17900D6B889 /* RemoteDrinksLoader.swift */,
 				3AAE10CD28500A0F0013C555 /* URLSessionHTTPClient.swift */,
-				3A60210D285A08290090D626 /* RemoteImageLoader.swift */,
 			);
 			path = DrinksCore;
 			sourceTree = "<group>";
@@ -138,9 +138,9 @@
 			isa = PBXGroup;
 			children = (
 				3A77924F28591E4800C76D50 /* SharedHelpers.swift */,
+				3A602111285A08AB0090D626 /* RemoteImageLoaderTests.swift */,
 				3AD68701284E962F00D6B889 /* RemoteDrinksLoaderTests.swift */,
 				3AD68712284ED3D900D6B889 /* URLSessionHTTPClientTests.swift */,
-				3A602111285A08AB0090D626 /* RemoteImageLoaderTests.swift */,
 			);
 			path = DrinksCoreTests;
 			sourceTree = "<group>";
