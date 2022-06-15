@@ -15,15 +15,11 @@ class RemoteImageLoader {
         self.httpClient = httpClient
     }
 
-    enum Error: Swift.Error {
-        case request
-    }
-
     func load(imageFromURL url: URL, completion: @escaping (Swift.Error) -> Void) {
         httpClient.get(from: url) { result in
             switch (result) {
             case .failure:
-                completion(Error.request)
+                completion(CoreError.request)
             default:
                 return
             }
@@ -48,8 +44,7 @@ class RemoteImageLoaderTests: XCTestCase {
         var capturedError: Error? = nil
         sut.load(imageFromURL: anyURL) { capturedError = $0 }
 
-
-        XCTAssertEqual(capturedError as? RemoteImageLoader.Error, RemoteImageLoader.Error.request)
+        XCTAssertEqual(capturedError as? CoreError, CoreError.request)
     }
 
     func makeSUT() -> (RemoteImageLoader, HTTPClientSpy) {

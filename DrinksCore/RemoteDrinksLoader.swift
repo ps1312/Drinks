@@ -16,16 +16,11 @@ public class RemoteDrinksLoader {
         self.httpClient = httpClient
     }
 
-    public enum Error: Swift.Error {
-        case request
-        case decoder
-    }
-
     public func load(completion: @escaping (Result<[Drink], Swift.Error>) -> Void) {
         httpClient.get(from: url) { result in
             switch (result) {
             case .failure:
-                completion(.failure(RemoteDrinksLoader.Error.request))
+                completion(.failure(CoreError.request))
             case .success(let data):
                 do {
                     let apiResult = try JSONDecoder().decode(ApiDrinksResult.self, from: data)
@@ -33,7 +28,7 @@ public class RemoteDrinksLoader {
 
                     completion(.success(drinks))
                 } catch {
-                    completion(.failure(RemoteDrinksLoader.Error.decoder))
+                    completion(.failure(CoreError.decoder))
                 }
             }
         }
