@@ -14,19 +14,14 @@ public class URLSessionHTTPClient: HTTPClient {
         self.urlSession = urlSession
     }
 
-    public func get(from url: URL, completion: @escaping (Result<Data, Swift.Error>) -> Void) {
+    public func get(from url: URL, completion: @escaping (Result<Data, Error>) -> Void) {
         let task = urlSession.dataTask(with: url) { data, response, error in
-            if data == Data() && response == nil && error == nil {
+            guard let data = data, response != nil, error == nil else {
                 completion(.failure(CoreError.request))
                 return
             }
 
-            if error != nil {
-                completion(.failure(CoreError.request))
-                return
-            }
-
-            completion(.success(data ?? Data()))
+            completion(.success(data))
         }
 
         task.resume()

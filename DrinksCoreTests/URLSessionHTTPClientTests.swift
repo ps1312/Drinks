@@ -45,7 +45,7 @@ class URLSessionHTTPClientTests: XCTestCase {
 
         let expectedResult = String("expected response data").data(using: .utf8)!
 
-        URLProtocolStub.stub = (data: expectedResult, response: nil, error: nil)
+        URLProtocolStub.stub = (data: expectedResult, response: anyHTTPURLResponse, error: nil)
 
         let sut = URLSessionHTTPClient()
 

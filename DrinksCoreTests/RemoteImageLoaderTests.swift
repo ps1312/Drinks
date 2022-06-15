@@ -15,7 +15,7 @@ class RemoteImageLoader {
         self.httpClient = httpClient
     }
 
-    func load(imageFromURL url: URL, completion: @escaping (Swift.Error) -> Void) {
+    func load(imageFromURL url: URL, completion: @escaping (Error) -> Void) {
         httpClient.get(from: url) { result in
             switch (result) {
             case .failure:

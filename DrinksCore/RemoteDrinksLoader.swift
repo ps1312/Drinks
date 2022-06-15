@@ -16,7 +16,7 @@ public class RemoteDrinksLoader {
         self.httpClient = httpClient
     }
 
-    public func load(completion: @escaping (Result<[Drink], Swift.Error>) -> Void) {
+    public func load(completion: @escaping (Result<[Drink], Error>) -> Void) {
         httpClient.get(from: url) { result in
             switch (result) {
             case .failure:
