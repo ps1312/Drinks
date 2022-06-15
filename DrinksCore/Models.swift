@@ -8,9 +8,10 @@
 import Foundation
 
 public typealias DrinksLoader = (@escaping (Result<[Drink], Error>) -> Void) -> Void
+public typealias ImageLoader = (URL, (Result<Data, Error>) -> Void) -> Void
 
 public protocol HTTPClient {
-    func get(from url: URL, completion: @escaping (Result<Data, Error>) -> Void) -> Void
+    func get(from url: URL, completion: @escaping (Result<Data, Error>) -> Void)
 }
 
 public struct Drink: Equatable {

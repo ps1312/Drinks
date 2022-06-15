@@ -33,24 +33,29 @@ class RemoteImageLoader {
 
 class RemoteImageLoaderTests: XCTestCase {
     func test_imageLoader_makesRequestForImage() {
-        let imageURL = URL(string: "https://image-url.com")!
-        let httpClient = HTTPClientSpy()
-        let sut = RemoteImageLoader(httpClient: httpClient)
+        let (sut, httpClient) = makeSUT()
 
-        sut.load(imageFromURL: imageURL) { _ in }
+        let expectedImageURL = URL(string: "https://image-url.com")!
+        sut.load(imageFromURL: expectedImageURL) { _ in }
 
-        XCTAssertEqual(httpClient.requests, [imageURL])
+        XCTAssertEqual(httpClient.requests, [expectedImageURL])
     }
 
     func test_load_returnsErrorOnLoadFailure() {
-        let httpClient = HTTPClientSpy()
+        let (sut, httpClient) = makeSUT()
         httpClient.failing = true
-        let sut = RemoteImageLoader(httpClient: httpClient)
 
         var capturedError: Error? = nil
         sut.load(imageFromURL: anyURL) { capturedError = $0 }
 
 
         XCTAssertEqual(capturedError as? RemoteImageLoader.Error, RemoteImageLoader.Error.request)
+    }
+
+    func makeSUT() -> (RemoteImageLoader, HTTPClientSpy) {
+        let httpClient = HTTPClientSpy()
+        let sut = RemoteImageLoader(httpClient: httpClient)
+
+        return (sut, httpClient)
     }
 }

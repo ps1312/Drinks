@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3A60210E285A08290090D626 /* RemoteImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A60210D285A08290090D626 /* RemoteImageLoader.swift */; };
+		3A602112285A08AB0090D626 /* RemoteImageLoaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A602111285A08AB0090D626 /* RemoteImageLoaderTests.swift */; };
 		3A77925028591E4800C76D50 /* SharedHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A77924F28591E4800C76D50 /* SharedHelpers.swift */; };
 		3AAE10C6285009990013C555 /* DrinksCoreIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AAE10C5285009990013C555 /* DrinksCoreIntegrationTests.swift */; };
 		3AAE10C7285009990013C555 /* DrinksCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AD686F4284E962F00D6B889 /* DrinksCore.framework */; };
@@ -50,6 +52,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3A60210D285A08290090D626 /* RemoteImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteImageLoader.swift; sourceTree = "<group>"; };
+		3A602111285A08AB0090D626 /* RemoteImageLoaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteImageLoaderTests.swift; sourceTree = "<group>"; };
 		3A77924F28591E4800C76D50 /* SharedHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedHelpers.swift; sourceTree = "<group>"; };
 		3AAE10C3285009990013C555 /* DrinksCoreIntegrationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DrinksCoreIntegrationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AAE10C5285009990013C555 /* DrinksCoreIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinksCoreIntegrationTests.swift; sourceTree = "<group>"; };
@@ -125,6 +129,7 @@
 				3AD6870C284E96D800D6B889 /* Models.swift */,
 				3AD6870E284ED17900D6B889 /* RemoteDrinksLoader.swift */,
 				3AAE10CD28500A0F0013C555 /* URLSessionHTTPClient.swift */,
+				3A60210D285A08290090D626 /* RemoteImageLoader.swift */,
 			);
 			path = DrinksCore;
 			sourceTree = "<group>";
@@ -135,6 +140,7 @@
 				3A77924F28591E4800C76D50 /* SharedHelpers.swift */,
 				3AD68701284E962F00D6B889 /* RemoteDrinksLoaderTests.swift */,
 				3AD68712284ED3D900D6B889 /* URLSessionHTTPClientTests.swift */,
+				3A602111285A08AB0090D626 /* RemoteImageLoaderTests.swift */,
 			);
 			path = DrinksCoreTests;
 			sourceTree = "<group>";
@@ -317,6 +323,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A60210E285A08290090D626 /* RemoteImageLoader.swift in Sources */,
 				3AD6870D284E96D800D6B889 /* Models.swift in Sources */,
 				3AD6870F284ED17900D6B889 /* RemoteDrinksLoader.swift in Sources */,
 				3AAE10CE28500A0F0013C555 /* URLSessionHTTPClient.swift in Sources */,
@@ -327,6 +334,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A602112285A08AB0090D626 /* RemoteImageLoaderTests.swift in Sources */,
 				3AD68702284E962F00D6B889 /* RemoteDrinksLoaderTests.swift in Sources */,
 				3AD68713284ED3D900D6B889 /* URLSessionHTTPClientTests.swift in Sources */,
 				3A77925028591E4800C76D50 /* SharedHelpers.swift in Sources */,

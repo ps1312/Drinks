@@ -18,7 +18,7 @@ class RemoteDrinksLoaderTests: XCTestCase {
     }
 
     func test_load_makeRequestWithUrl() {
-        let expectedUrl = URL(string: "https://www.any-url.com")!
+        let expectedUrl = URL(string: "https://www.specific-url.com")!
 
         let (sut, httpClient) = makeSUT(url: expectedUrl)
 
@@ -47,7 +47,7 @@ class RemoteDrinksLoaderTests: XCTestCase {
         assertResult(sut, result: .success([Drink]()))
     }
 
-    func test_load_returnsDrinksOnValidNonEmptyResponse() async throws {
+    func test_load_returnsDrinksOnValidNonEmptyResponse() {
         let (drinks, json) = makeDrinkSubject(size: 3)
 
         let (sut, httpClient) = makeSUT()
@@ -56,7 +56,7 @@ class RemoteDrinksLoaderTests: XCTestCase {
         assertResult(sut, result: .success(drinks))
     }
 
-    func makeSUT(url: URL = URL(string: "https://www.any-url.com")!) -> (sut: RemoteDrinksLoader, httpClient: HTTPClientSpy) {
+    func makeSUT(url: URL = anyURL) -> (sut: RemoteDrinksLoader, httpClient: HTTPClientSpy) {
         let httpClient = HTTPClientSpy()
         let sut = RemoteDrinksLoader(url: url, httpClient: httpClient)
 
