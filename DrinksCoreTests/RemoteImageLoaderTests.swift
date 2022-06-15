@@ -44,6 +44,7 @@ class RemoteImageLoaderTests: XCTestCase {
         var capturedError: Error? = nil
         sut.load(imageFromURL: anyURL) { capturedError = $0 }
 
+
         XCTAssertEqual(capturedError as? CoreError, CoreError.request)
     }
 
