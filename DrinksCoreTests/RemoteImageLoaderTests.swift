@@ -41,31 +41,28 @@ class RemoteImageLoaderTests: XCTestCase {
         let (sut, httpClient) = makeSUT()
         httpClient.failing = true
 
-        var capturedResult: Result<Data, Error>? = nil
-        sut.load(imageFromURL: anyURL) { capturedResult = $0 }
-
-        switch (capturedResult) {
-        case .failure(let capturedError):
-            XCTAssertEqual(capturedError as? CoreError, CoreError.request)
-        default:
-            XCTFail("Expected a failure, instead got \(String(describing: capturedResult))")
-        }
+        assertResult(sut, expectedResult: .failure(CoreError.request))
     }
 
     func test_load_returnsImageDataOnSuccess() {
         let expectedData = "Some specific data".data(using: .utf8)!
-
         let (sut, httpClient) = makeSUT()
         httpClient.response = expectedData
 
+        assertResult(sut, expectedResult: .success(expectedData))
+    }
+
+    func assertResult(_ sut: RemoteImageLoader, expectedResult: Result<Data, Error>) {
         var capturedResult: Result<Data, Error>? = nil
         sut.load(imageFromURL: anyURL) { capturedResult = $0 }
 
-        switch (capturedResult) {
-        case .success(let capturedData):
+        switch (capturedResult, expectedResult) {
+        case let (.failure(capturedError), .failure(expectedError)):
+            XCTAssertEqual(capturedError as? CoreError, expectedError as? CoreError)
+        case let (.success(capturedData), .success(expectedData)):
             XCTAssertEqual(capturedData, expectedData)
         default:
-            XCTFail("Expected a success, instead got \(String(describing: capturedResult))")
+            XCTFail("capturedResult and expectedResult should've been equal, instead got \(String(describing: capturedResult)) and \(String(describing: expectedResult)) respectively")
         }
     }
 

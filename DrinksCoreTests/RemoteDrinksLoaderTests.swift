@@ -96,20 +96,3 @@ class RemoteDrinksLoaderTests: XCTestCase {
         return (models, json: responseJSON.data(using: .utf8)!)
     }
 }
-
-class HTTPClientSpy: HTTPClient {
-    var requests: [URL] = []
-    var failing: Bool = false
-    var response = String("{\"drinks\": []}").data(using: .utf8)!
-
-    func get(from url: URL, completion: (Result<Data, Error>) -> Void) {
-        requests.append(url)
-
-        if (failing) {
-            completion(.failure(anyError))
-            return
-        }
-
-        completion(.success(response))
-    }
-}
