@@ -15,13 +15,13 @@ class RemoteImageLoader {
         self.httpClient = httpClient
     }
 
-    func load(imageFromURL url: URL, completion: @escaping (Error) -> Void) {
+    func load(imageFromURL url: URL, completion: @escaping (Result<Data, Error>) -> Void) {
         httpClient.get(from: url) { result in
             switch (result) {
             case .failure:
-                completion(CoreError.request)
-            default:
-                return
+                completion(.failure(CoreError.request))
+            case .success(let imageData):
+                completion(.success(imageData))
             }
         }
     }
@@ -41,11 +41,32 @@ class RemoteImageLoaderTests: XCTestCase {
         let (sut, httpClient) = makeSUT()
         httpClient.failing = true
 
-        var capturedError: Error? = nil
-        sut.load(imageFromURL: anyURL) { capturedError = $0 }
+        var capturedResult: Result<Data, Error>? = nil
+        sut.load(imageFromURL: anyURL) { capturedResult = $0 }
 
+        switch (capturedResult) {
+        case .failure(let capturedError):
+            XCTAssertEqual(capturedError as? CoreError, CoreError.request)
+        default:
+            XCTFail("Expected a failure, instead got \(String(describing: capturedResult))")
+        }
+    }
 
-        XCTAssertEqual(capturedError as? CoreError, CoreError.request)
+    func test_load_returnsImageDataOnSuccess() {
+        let expectedData = "Some specific data".data(using: .utf8)!
+
+        let (sut, httpClient) = makeSUT()
+        httpClient.response = expectedData
+
+        var capturedResult: Result<Data, Error>? = nil
+        sut.load(imageFromURL: anyURL) { capturedResult = $0 }
+
+        switch (capturedResult) {
+        case .success(let capturedData):
+            XCTAssertEqual(capturedData, expectedData)
+        default:
+            XCTFail("Expected a success, instead got \(String(describing: capturedResult))")
+        }
     }
 
     func makeSUT() -> (RemoteImageLoader, HTTPClientSpy) {
