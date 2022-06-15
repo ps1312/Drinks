@@ -8,3 +8,4 @@
 import Foundation
 
 let anyError = NSError(domain: "error from shared helpers", code: 111)
+let anyURL = URL(string: "https://www.any-url.com")!
