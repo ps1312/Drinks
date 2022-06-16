@@ -33,6 +33,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 }
             }
         }
+        drinksViewController.getImage = httpClient.get
 
         window?.rootViewController = navController
         window?.makeKeyAndVisible()

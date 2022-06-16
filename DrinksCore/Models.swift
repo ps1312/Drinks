@@ -10,7 +10,6 @@ import Foundation
 public typealias DataResult = Result<Data, Error>
 
 public typealias DrinksLoader = (@escaping (Result<[Drink], Error>) -> Void) -> Void
-public typealias ImageLoader = (URL, (DataResult) -> Void) -> Void
 
 public protocol HTTPClient {
     func get(from url: URL, completion: @escaping (DataResult) -> Void)

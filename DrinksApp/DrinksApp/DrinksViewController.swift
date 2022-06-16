@@ -10,18 +10,19 @@ import DrinksCore
 
 class DrinksViewController: UITableViewController {
     var drinks = [Drink]()
-    var getDrinks: DrinksLoader?
+    var getDrinks: DrinksLoader!
+    var getImage: ((URL, @escaping (Result<Data, Error>) -> Void) -> Void)!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        title = "Drinks 😁🍸"
+        title = "Drinks 🥴🍸"
 
         let refreshControler = UIRefreshControl()
         refreshControl = refreshControler
         refreshControler.beginRefreshing()
 
-        getDrinks? { [weak self] items in
+        getDrinks { [weak self] items in
             self?.drinks = try! items.get()
             self?.tableView.reloadData()
             refreshControler.endRefreshing()
@@ -30,8 +31,13 @@ class DrinksViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let drink = drinks[indexPath.row]
+
         let drinkCell = tableView.dequeueReusableCell(withIdentifier: "DrinkListItem", for: indexPath) as! DrinkListItem
         drinkCell.nameLabel.text = drink.name
+        drinkCell.imageLoader = getImage
+
+        drinkCell.configureView(url: drink.thumb)
+
         return drinkCell
     }
 
