@@ -18,12 +18,9 @@ class DrinkListItem: UITableViewCell {
         imageLoader(url) { [weak self] result in
             switch (result) {
             case .success(let imageData):
-                DispatchQueue.main.async {
-                    let image = UIImage(data: imageData)
-                    self?.thumbnailImage.image = image
-                }
-            default:
-                break
+                let image = UIImage(data: imageData)
+                self?.thumbnailImage.image = image
+            default: break
             }
         }
     }
