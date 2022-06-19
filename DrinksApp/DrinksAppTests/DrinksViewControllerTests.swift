@@ -34,7 +34,7 @@ class DrinksAppTests: XCTestCase {
         let sut = makeSUT()
 
         let drink1 = Drink(id: 0, name: "name 0", thumb: URL(string: "https://url0.com")!)
-        let drink2 = Drink(id: 1, name: "name 1", thumb: URL(string: "https://ur1.com")!)
+        let drink2 = Drink(id: 1, name: "name 1", thumb: URL(string: "https://url1.com")!)
         let expectedDrinks = [drink1, drink2]
 
         sut.getDrinks = { completion in completion(.success(expectedDrinks)) }
@@ -44,13 +44,38 @@ class DrinksAppTests: XCTestCase {
 
         sut.loadViewIfNeeded()
 
-        XCTAssertFalse(sut.isLoading())
-
         for i in 0...expectedDrinks.count - 1 {
             XCTAssertEqual(sut.name(atRow: i), expectedDrinks[i].name)
         }
         XCTAssertEqual(imagesRequests, [drink1.thumb, drink2.thumb])
         XCTAssertEqual(sut.numberOfDrinks(), expectedDrinks.count)
+    }
+
+    func test_viewDidLoad_displaysDownloadedImages() {
+        let sut = makeSUT()
+
+        let drink1 = Drink(id: 0, name: "name 0", thumb: URL(string: "https://url0.com")!)
+        let drink1Image = UIImage.make(withColor: .green).pngData()!
+        let drink2 = Drink(id: 1, name: "name 1", thumb: URL(string: "https://url1.com")!)
+        let drink2Image = UIImage.make(withColor: .yellow).pngData()!
+        let expectedDrinks = [drink1, drink2]
+        let expectedImages = [drink1Image, drink2Image]
+
+        sut.getDrinks = { completion in completion(.success(expectedDrinks)) }
+
+        sut.loadViewIfNeeded()
+
+        var imagesRequests = [URL]()
+        sut.getImage = { url, completion in
+            imagesRequests.append(url)
+            completion(.success(expectedImages[imagesRequests.count - 1]))
+        }
+
+        for i in 0...expectedDrinks.count - 1 {
+            let drinkCell = sut.renderDrinkCell(atRow: i)
+            XCTAssertEqual(drinkCell.name(), expectedDrinks[i].name)
+            XCTAssertEqual(drinkCell.imageData(), expectedImages[i])
+        }
     }
 
     private func makeSUT() -> DrinksViewController {
@@ -74,10 +99,43 @@ private extension DrinksViewController {
         return refreshControl.isRefreshing
     }
 
+    func renderDrinkCell(atRow row: Int) -> DrinkListItem {
+        return tableView(tableView, cellForRowAt: IndexPath(row: row, section: 0)) as! DrinkListItem
+    }
+
     func name(atRow row: Int) -> String {
         let cell = tableView(tableView, cellForRowAt: IndexPath(row: row, section: 0)) as? DrinkListItem
         return cell?.nameLabel.text ?? ""
     }
 
+    func image(atRow row: Int) -> UIImage? {
+        let cell = tableView(tableView, cellForRowAt: IndexPath(row: row, section: 0)) as? DrinkListItem
+        return cell?.thumbnailImage.image
+    }
+
     private var drinksSection: Int { 0 }
 }
+
+private extension DrinkListItem {
+    func name() -> String? {
+        return nameLabel.text
+    }
+
+    func imageData() -> Data? {
+        return thumbnailImage.image?.pngData()
+    }
+}
+
+extension UIImage {
+    static func make(withColor color: UIColor) -> UIImage {
+        let rect = CGRect(x: 0, y: 0, width: 1, height: 1)
+        UIGraphicsBeginImageContext(rect.size)
+        let context = UIGraphicsGetCurrentContext()!
+        context.setFillColor(color.cgColor)
+        context.fill(rect)
+        let img = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return img!
+    }
+}
+
