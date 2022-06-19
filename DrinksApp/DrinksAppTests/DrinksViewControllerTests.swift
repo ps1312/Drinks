@@ -34,34 +34,13 @@ class DrinksAppTests: XCTestCase {
         let sut = makeSUT()
 
         let drink1 = Drink(id: 0, name: "name 0", thumb: URL(string: "https://url0.com")!)
-        let drink2 = Drink(id: 1, name: "name 1", thumb: URL(string: "https://url1.com")!)
-        let expectedDrinks = [drink1, drink2]
-
-        sut.getDrinks = { completion in completion(.success(expectedDrinks)) }
-
-        var imagesRequests = [URL]()
-        sut.getImage = { url, _ in imagesRequests.append(url) }
-
-        sut.loadViewIfNeeded()
-
-        for i in 0...expectedDrinks.count - 1 {
-            XCTAssertEqual(sut.name(atRow: i), expectedDrinks[i].name)
-        }
-        XCTAssertEqual(imagesRequests, [drink1.thumb, drink2.thumb])
-        XCTAssertEqual(sut.numberOfDrinks(), expectedDrinks.count)
-    }
-
-    func test_viewDidLoad_displaysDownloadedImages() {
-        let sut = makeSUT()
-
-        let drink1 = Drink(id: 0, name: "name 0", thumb: URL(string: "https://url0.com")!)
         let drink1Image = UIImage.make(withColor: .green).pngData()!
         let drink2 = Drink(id: 1, name: "name 1", thumb: URL(string: "https://url1.com")!)
         let drink2Image = UIImage.make(withColor: .yellow).pngData()!
         let expectedDrinks = [drink1, drink2]
         let expectedImages = [drink1Image, drink2Image]
 
-        sut.getDrinks = { completion in completion(.success(expectedDrinks)) }
+        sut.getDrinks = { $0(.success(expectedDrinks)) }
 
         sut.loadViewIfNeeded()
 
@@ -71,11 +50,15 @@ class DrinksAppTests: XCTestCase {
             completion(.success(expectedImages[imagesRequests.count - 1]))
         }
 
+        XCTAssertEqual(sut.numberOfDrinks(), expectedDrinks.count)
+
         for i in 0...expectedDrinks.count - 1 {
             let drinkCell = sut.renderDrinkCell(atRow: i)
             XCTAssertEqual(drinkCell.name(), expectedDrinks[i].name)
             XCTAssertEqual(drinkCell.imageData(), expectedImages[i])
         }
+
+        XCTAssertEqual(imagesRequests, [drink1.thumb, drink2.thumb])
     }
 
     private func makeSUT() -> DrinksViewController {
