@@ -22,9 +22,17 @@ class DrinksViewController: UITableViewController {
         refreshControl = refreshControler
         refreshControler.beginRefreshing()
 
-        getDrinks { [weak self] items in
-            self?.drinks = try! items.get()
-            self?.tableView.reloadData()
+        getDrinks { [weak self] result in
+            switch (result) {
+            case .success(let drinks):
+                self?.drinks = drinks
+                self?.tableView.reloadData()
+            case .failure:
+                let errorLabel = UILabel()
+                errorLabel.text = "Something went wrong..."
+                self?.tableView.backgroundView = errorLabel
+            }
+
             refreshControler.endRefreshing()
         }
     }

@@ -30,6 +30,16 @@ class DrinksAppTests: XCTestCase {
         XCTAssertTrue(sut.isLoading())
     }
 
+    func test_viewDidLoad_displaysAnErrorMessageOnFailure() {
+        let sut = makeSUT()
+        sut.getDrinks = { completion in completion(.failure(anyError)) }
+
+        sut.loadViewIfNeeded()
+
+        let errorView = sut.errorView()
+        XCTAssertEqual(errorView?.text, "Something went wrong...")
+    }
+
     func test_viewDidLoad_displaysAvailableDrinksAndDownloadsImages() {
         let sut = makeSUT()
 
@@ -55,7 +65,7 @@ class DrinksAppTests: XCTestCase {
         for i in 0...expectedDrinks.count - 1 {
             let drinkCell = sut.renderDrinkCell(atRow: i)
             XCTAssertEqual(drinkCell.name(), expectedDrinks[i].name)
-            XCTAssertEqual(drinkCell.imageData(), expectedImages[i])
+            XCTAssertEqual(drinkCell.image(), expectedImages[i])
         }
 
         XCTAssertEqual(imagesRequests, [drink1.thumb, drink2.thumb])
@@ -74,6 +84,8 @@ class DrinksAppTests: XCTestCase {
     }
 }
 
+let anyError = NSError(domain: "error from shared helpers", code: 111)
+
 private extension DrinksViewController {
     func numberOfDrinks() -> Int { tableView.numberOfRows(inSection: drinksSection) }
 
@@ -82,18 +94,13 @@ private extension DrinksViewController {
         return refreshControl.isRefreshing
     }
 
+    func errorView() -> UILabel? {
+        guard let errorView = try? XCTUnwrap(tableView.backgroundView as? UILabel, "Tableview background view is missing an error state") else { return nil }
+        return errorView
+    }
+
     func renderDrinkCell(atRow row: Int) -> DrinkListItem {
         return tableView(tableView, cellForRowAt: IndexPath(row: row, section: 0)) as! DrinkListItem
-    }
-
-    func name(atRow row: Int) -> String {
-        let cell = tableView(tableView, cellForRowAt: IndexPath(row: row, section: 0)) as? DrinkListItem
-        return cell?.nameLabel.text ?? ""
-    }
-
-    func image(atRow row: Int) -> UIImage? {
-        let cell = tableView(tableView, cellForRowAt: IndexPath(row: row, section: 0)) as? DrinkListItem
-        return cell?.thumbnailImage.image
     }
 
     private var drinksSection: Int { 0 }
@@ -104,12 +111,12 @@ private extension DrinkListItem {
         return nameLabel.text
     }
 
-    func imageData() -> Data? {
+    func image() -> Data? {
         return thumbnailImage.image?.pngData()
     }
 }
 
-extension UIImage {
+private extension UIImage {
     static func make(withColor color: UIColor) -> UIImage {
         let rect = CGRect(x: 0, y: 0, width: 1, height: 1)
         UIGraphicsBeginImageContext(rect.size)
