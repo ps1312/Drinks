@@ -9,6 +9,7 @@ import UIKit
 import DrinksCore
 
 class DrinksViewController: UITableViewController {
+    var count = 0
     var drinks = [Drink]()
     var getDrinks: DrinksLoader!
     var getImage: ((URL, @escaping (Result<Data, Error>) -> Void) -> Void)!
@@ -19,8 +20,14 @@ class DrinksViewController: UITableViewController {
         title = "Drinks 🥴🍸"
 
         let refreshControler = UIRefreshControl()
+        refreshControler.addTarget(self, action: #selector(loadData), for: .valueChanged)
         refreshControl = refreshControler
-        refreshControler.beginRefreshing()
+
+        loadData()
+    }
+
+    @objc private func loadData() {
+        tableView.refreshControl?.beginRefreshing()
 
         getDrinks { [weak self] result in
             switch (result) {
@@ -29,11 +36,12 @@ class DrinksViewController: UITableViewController {
                 self?.tableView.reloadData()
             case .failure:
                 let errorLabel = UILabel()
+                errorLabel.textAlignment = .center
                 errorLabel.text = "Something went wrong..."
                 self?.tableView.backgroundView = errorLabel
             }
 
-            refreshControler.endRefreshing()
+            self?.tableView.refreshControl?.endRefreshing()
         }
     }
 

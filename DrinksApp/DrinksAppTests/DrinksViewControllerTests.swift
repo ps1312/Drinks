@@ -36,8 +36,20 @@ class DrinksAppTests: XCTestCase {
 
         sut.loadViewIfNeeded()
 
-        let errorView = sut.errorView()
-        XCTAssertEqual(errorView?.text, "Something went wrong...")
+        XCTAssertEqual(sut.errorView()?.text, "Something went wrong...")
+    }
+
+    func test_pullToRefresh_reloadsDrinks() {
+        let sut = makeSUT()
+
+        var count = 0
+        sut.getDrinks = { _ in count += 1 }
+
+        sut.loadViewIfNeeded()
+
+        sut.simulatePullToRefresh()
+
+        XCTAssertEqual(count, 2)
     }
 
     func test_viewDidLoad_displaysAvailableDrinksAndDownloadsImages() {
@@ -101,6 +113,10 @@ private extension DrinksViewController {
 
     func renderDrinkCell(atRow row: Int) -> DrinkListItem {
         return tableView(tableView, cellForRowAt: IndexPath(row: row, section: 0)) as! DrinkListItem
+    }
+
+    func simulatePullToRefresh() {
+        tableView.refreshControl?.sendActions(for: .valueChanged)
     }
 
     private var drinksSection: Int { 0 }
