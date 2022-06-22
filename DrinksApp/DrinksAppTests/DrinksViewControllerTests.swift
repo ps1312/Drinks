@@ -83,6 +83,22 @@ class DrinksAppTests: XCTestCase {
         XCTAssertEqual(imagesRequests, [drink1.thumb, drink2.thumb])
     }
 
+    func test_drinkCell_displaysSpinnerWhileLoadingImage() {
+        let sut = makeSUT()
+        let drink1 = Drink(id: 0, name: "name 0", thumb: URL(string: "https://url0.com")!)
+
+        sut.getDrinks = { completion in completion(.success([drink1])) }
+
+        sut.loadViewIfNeeded()
+
+        let drinkCell = sut.renderDrinkCell(atRow: 0)
+        print(drinkCell.loadingIndicator.isHidden)
+        print(drinkCell.loadingIndicator.isAnimating)
+
+        XCTAssertFalse(drinkCell.isLoadingHidden())
+        XCTAssertTrue(drinkCell.isloadingAnimating())
+    }
+
     private func makeSUT() -> DrinksViewController {
         let bundle = Bundle(for: DrinksViewController.self)
         let storyboard = UIStoryboard(name: "Main", bundle: bundle)
@@ -130,6 +146,14 @@ private extension DrinkListItem {
     func image() -> Data? {
         return thumbnailImage.image?.pngData()
     }
+
+    func isLoadingHidden() -> Bool {
+        return loadingIndicator!.isHidden
+    }
+
+    func isloadingAnimating() -> Bool {
+        return loadingIndicator!.isAnimating
+    }
 }
 
 private extension UIImage {
@@ -144,4 +168,3 @@ private extension UIImage {
         return img!
     }
 }
-
