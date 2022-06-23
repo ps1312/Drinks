@@ -55,10 +55,8 @@ class DrinksViewControllerTests: XCTestCase {
     func test_viewDidLoad_displaysAvailableDrinksAndDownloadsImages() {
         let sut = makeSUT()
 
-        let drink1 = Drink(id: 0, name: "name 0", thumb: anyURL)
-        let drink1Image = UIImage.make(withColor: .green).pngData()!
-        let drink2 = Drink(id: 1, name: "name 1", thumb: anyURL)
-        let drink2Image = UIImage.make(withColor: .yellow).pngData()!
+        let (drink1, drink1Image) = makeFakeDrink(id: 1, url: URL(string: "https://www.image-1.com")!)
+        let (drink2, drink2Image) = makeFakeDrink(id: 2, url: URL(string: "https://www.image-2.com")!)
         let expectedDrinks = [drink1, drink2]
         let expectedImages = [drink1Image, drink2Image]
 
@@ -75,7 +73,7 @@ class DrinksViewControllerTests: XCTestCase {
         XCTAssertEqual(sut.numberOfDrinks(), expectedDrinks.count)
 
         for i in 0...expectedDrinks.count - 1 {
-            let drinkCell = sut.renderDrinkCell(atRow: i)
+            let drinkCell = sut.displayCell(atRow: i)
 
             XCTAssertFalse(drinkCell.isRetryButtonVisible())
             XCTAssertEqual(drinkCell.name(), expectedDrinks[i].name)
@@ -87,12 +85,12 @@ class DrinksViewControllerTests: XCTestCase {
 
     func test_drinkCellImage_displaySpinnerWhileLoading() {
         let sut = makeSUT()
-        let drink1 = Drink(id: 0, name: "name 0", thumb: anyURL)
-        sut.getDrinks = { completion in completion(.success([drink1])) }
+        let (drink,_) = makeFakeDrink()
+        sut.getDrinks = { completion in completion(.success([drink])) }
 
         sut.loadViewIfNeeded()
 
-        let drinkCell = sut.renderDrinkCell(atRow: 0)
+        let drinkCell = sut.displayCell(atRow: 0)
 
         XCTAssertFalse(drinkCell.isLoadingHidden())
         XCTAssertTrue(drinkCell.isloadingAnimating())
@@ -100,8 +98,8 @@ class DrinksViewControllerTests: XCTestCase {
 
     func test_drinkCellImage_allowRetryOnLoadFailure() {
         let sut = makeSUT()
-        let drink1 = Drink(id: 0, name: "name 0", thumb: anyURL)
-        sut.getDrinks = { completion in completion(.success([drink1])) }
+        let (drink,_) = makeFakeDrink()
+        sut.getDrinks = { completion in completion(.success([drink])) }
 
         var imageLoadCount = 0
         sut.getImage = { _, completion in
@@ -111,7 +109,7 @@ class DrinksViewControllerTests: XCTestCase {
 
         sut.loadViewIfNeeded()
 
-        let drinkCell = sut.renderDrinkCell(atRow: 0)
+        let drinkCell = sut.displayCell(atRow: 0)
         XCTAssertTrue(drinkCell.isRetryButtonVisible())
 
         drinkCell.retryButton.sendActions(for: .touchUpInside)
@@ -130,6 +128,12 @@ class DrinksViewControllerTests: XCTestCase {
 
         return sut
     }
+
+    private func makeFakeDrink(id: Int = 0, url: URL = anyURL) -> (Drink, Data) {
+        let drink = Drink(id: id, name: "name \(id)", thumb: url)
+        let drinkImage = UIImage.make(withColor: .green).pngData()!
+        return (drink, drinkImage)
+    }
 }
 
 private extension DrinksViewController {
@@ -145,7 +149,7 @@ private extension DrinksViewController {
         return errorView
     }
 
-    func renderDrinkCell(atRow row: Int) -> DrinkListItem {
+    func displayCell(atRow row: Int) -> DrinkListItem {
         return tableView(tableView, cellForRowAt: IndexPath(row: row, section: 0)) as! DrinkListItem
     }
 
