@@ -17,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="DrinkListItem" rowHeight="120" id="hHb-QK-JPb" userLabel="Drink List Item" customClass="DrinkListItem" customModule="DrinksApp" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="DrinkListItem" rowHeight="120" id="hHb-QK-JPb" userLabel="Drink List Item" customClass="DrinkListItem" customModule="DrinksApp" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="44.5" width="414" height="120"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="hHb-QK-JPb" id="9tE-mX-ZrF">
@@ -42,13 +42,25 @@
                                                 <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="NUe-fE-K91">
                                                     <rect key="frame" x="40" y="40" width="20" height="20"/>
                                                 </activityIndicatorView>
+                                                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bBD-QO-DvV">
+                                                    <rect key="frame" x="18.5" y="18.5" width="63.5" height="63.5"/>
+                                                    <state key="normal" title="Button"/>
+                                                    <buttonConfiguration key="configuration" style="plain" title="↺" buttonSize="large">
+                                                        <fontDescription key="titleFontDescription" type="system" pointSize="28"/>
+                                                    </buttonConfiguration>
+                                                    <connections>
+                                                        <action selector="retry:" destination="hHb-QK-JPb" eventType="touchUpInside" id="AaU-Ul-AMK"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                             <constraints>
+                                                <constraint firstItem="bBD-QO-DvV" firstAttribute="centerX" secondItem="CBS-4W-XKy" secondAttribute="centerX" id="77l-q7-dKf"/>
                                                 <constraint firstAttribute="height" constant="100" id="GQS-Lu-43g"/>
                                                 <constraint firstAttribute="width" constant="100" id="GfZ-MX-v6O"/>
                                                 <constraint firstAttribute="trailing" secondItem="hQD-xV-liT" secondAttribute="trailing" id="K3b-Lc-Xle"/>
                                                 <constraint firstItem="hQD-xV-liT" firstAttribute="top" secondItem="CBS-4W-XKy" secondAttribute="top" id="O7j-Un-abd"/>
+                                                <constraint firstItem="bBD-QO-DvV" firstAttribute="centerY" secondItem="CBS-4W-XKy" secondAttribute="centerY" id="XvU-qC-JQs"/>
                                                 <constraint firstItem="NUe-fE-K91" firstAttribute="centerY" secondItem="CBS-4W-XKy" secondAttribute="centerY" id="aVg-a9-Utr"/>
                                                 <constraint firstItem="hQD-xV-liT" firstAttribute="leading" secondItem="CBS-4W-XKy" secondAttribute="leading" id="lhn-Co-wzV"/>
                                                 <constraint firstItem="NUe-fE-K91" firstAttribute="centerX" secondItem="CBS-4W-XKy" secondAttribute="centerX" id="rBJ-kC-V6f"/>
@@ -68,6 +80,9 @@
                                             <state key="normal" title="ver mais">
                                                 <color key="titleColor" name="AccentColor"/>
                                             </state>
+                                            <connections>
+                                                <action selector="displayDetails:" destination="hHb-QK-JPb" eventType="touchUpInside" id="vyH-Wl-wBn"/>
+                                            </connections>
                                         </button>
                                     </subviews>
                                     <constraints>
@@ -83,8 +98,10 @@
                                 </tableViewCellContentView>
                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <connections>
+                                    <outlet property="detailsButton" destination="8Zk-1c-hJq" id="a6K-UN-QPS"/>
                                     <outlet property="loadingIndicator" destination="NUe-fE-K91" id="vnp-MF-qIY"/>
                                     <outlet property="nameLabel" destination="JHg-QT-nBN" id="2eK-h7-d5N"/>
+                                    <outlet property="retryButton" destination="bBD-QO-DvV" id="7DQ-v9-bvS"/>
                                     <outlet property="thumbnailImage" destination="hQD-xV-liT" id="v54-uQ-AYH"/>
                                 </connections>
                             </tableViewCell>

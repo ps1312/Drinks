@@ -76,6 +76,8 @@ class DrinksAppTests: XCTestCase {
 
         for i in 0...expectedDrinks.count - 1 {
             let drinkCell = sut.renderDrinkCell(atRow: i)
+
+            XCTAssertFalse(drinkCell.isRetryButtonVisible())
             XCTAssertEqual(drinkCell.name(), expectedDrinks[i].name)
             XCTAssertEqual(drinkCell.image(), expectedImages[i])
         }
@@ -83,20 +85,38 @@ class DrinksAppTests: XCTestCase {
         XCTAssertEqual(imagesRequests, [drink1.thumb, drink2.thumb])
     }
 
-    func test_drinkCell_displaysSpinnerWhileLoadingImage() {
+    func test_drinkCellImage_displaySpinnerWhileLoading() {
         let sut = makeSUT()
         let drink1 = Drink(id: 0, name: "name 0", thumb: URL(string: "https://url0.com")!)
-
         sut.getDrinks = { completion in completion(.success([drink1])) }
 
         sut.loadViewIfNeeded()
 
         let drinkCell = sut.renderDrinkCell(atRow: 0)
-        print(drinkCell.loadingIndicator.isHidden)
-        print(drinkCell.loadingIndicator.isAnimating)
 
         XCTAssertFalse(drinkCell.isLoadingHidden())
         XCTAssertTrue(drinkCell.isloadingAnimating())
+    }
+
+    func test_drinkCellImage_allowRetryOnLoadFailure() {
+        let sut = makeSUT()
+        let drink1 = Drink(id: 0, name: "name 0", thumb: URL(string: "https://url0.com")!)
+        sut.getDrinks = { completion in completion(.success([drink1])) }
+
+        var imageLoadCount = 0
+        sut.getImage = { _, completion in
+            imageLoadCount += 1
+            completion(.failure(anyError))
+        }
+
+        sut.loadViewIfNeeded()
+
+        let drinkCell = sut.renderDrinkCell(atRow: 0)
+        XCTAssertTrue(drinkCell.isRetryButtonVisible())
+
+        drinkCell.retryButton.sendActions(for: .touchUpInside)
+
+        XCTAssertEqual(imageLoadCount, 2)
     }
 
     private func makeSUT() -> DrinksViewController {
@@ -141,6 +161,10 @@ private extension DrinksViewController {
 private extension DrinkListItem {
     func name() -> String? {
         return nameLabel.text
+    }
+
+    func isRetryButtonVisible() -> Bool {
+        return !retryButton!.isHidden
     }
 
     func image() -> Data? {

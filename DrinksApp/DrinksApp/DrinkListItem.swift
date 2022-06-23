@@ -9,24 +9,40 @@ import UIKit
 import DrinksCore
 
 public class DrinkListItem: UITableViewCell {
+    var url: URL? = nil
     var imageLoader: ((URL, @escaping (Result<Data, Error>) -> Void) -> Void)!
 
     @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
     @IBOutlet weak var thumbnailImage: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var retryButton: UIButton!
+    @IBOutlet weak var detailsButton: UIButton!
 
     func configureView(url: URL) {
+        self.url = url
+
+        loadImage()
+    }
+
+    @IBAction func displayDetails(_ sender: Any) {}
+
+    @IBAction func retry(_ sender: Any) {
+        loadImage()
+    }
+
+    func loadImage() {
+        retryButton.isHidden = true
         loadingIndicator.startAnimating()
 
-        imageLoader(url) { [weak self] result in
+        imageLoader(self.url!) { [weak self] result in
             self?.loadingIndicator.stopAnimating()
 
             switch (result) {
             case .success(let imageData):
                 let image = UIImage(data: imageData)
                 self?.thumbnailImage.image = image
-            default:
-                break
+            case .failure:
+                self?.retryButton.isHidden = false
             }
         }
     }
