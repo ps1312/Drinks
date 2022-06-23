@@ -1,8 +1,8 @@
 //
 //  AppDelegate.swift
-//  DrinksApp
+//  DrinksiOS
 //
-//  Created by Paulo Sergio da Silva Rodrigues on 07/06/22.
+//  Created by Paulo Sergio da Silva Rodrigues on 23/06/22.
 //
 
 import UIKit
