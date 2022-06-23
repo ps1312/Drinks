@@ -21,7 +21,7 @@
 		3AFB6EFE28650BE1000A6FCB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFB6EFD28650BE1000A6FCB /* SceneDelegate.swift */; };
 		3AFB6F0528650BE2000A6FCB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3AFB6F0428650BE2000A6FCB /* Assets.xcassets */; };
 		3AFB6F0828650BE2000A6FCB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3AFB6F0628650BE2000A6FCB /* LaunchScreen.storyboard */; };
-		3AFB6F1328650BE3000A6FCB /* DrinksiOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFB6F1228650BE3000A6FCB /* DrinksiOSTests.swift */; };
+		3AFB6F1328650BE3000A6FCB /* DrinksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFB6F1228650BE3000A6FCB /* DrinksViewController.swift */; };
 		3AFB6F2C28650BF1000A6FCB /* DrinksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFB6F2B28650BF1000A6FCB /* DrinksViewController.swift */; };
 		3AFB6F3028650C16000A6FCB /* DrinkListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFB6F2F28650C16000A6FCB /* DrinkListItem.swift */; };
 		3AFB6F3228650D13000A6FCB /* DrinksCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AD686F4284E962F00D6B889 /* DrinksCore.framework */; };
@@ -91,7 +91,7 @@
 		3AFB6F0728650BE2000A6FCB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3AFB6F0928650BE2000A6FCB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3AFB6F0E28650BE3000A6FCB /* DrinksiOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DrinksiOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		3AFB6F1228650BE3000A6FCB /* DrinksiOSTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinksiOSTests.swift; sourceTree = "<group>"; };
+		3AFB6F1228650BE3000A6FCB /* DrinksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinksViewController.swift; sourceTree = "<group>"; };
 		3AFB6F2B28650BF1000A6FCB /* DrinksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinksViewController.swift; sourceTree = "<group>"; };
 		3AFB6F2D28650C00000A6FCB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		3AFB6F2F28650C16000A6FCB /* DrinkListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkListItem.swift; sourceTree = "<group>"; };
@@ -210,7 +210,7 @@
 		3AFB6F1128650BE3000A6FCB /* DrinksiOSTests */ = {
 			isa = PBXGroup;
 			children = (
-				3AFB6F1228650BE3000A6FCB /* DrinksiOSTests.swift */,
+				3AFB6F1228650BE3000A6FCB /* DrinksViewController.swift */,
 			);
 			path = DrinksiOSTests;
 			sourceTree = "<group>";
@@ -462,7 +462,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3AFB6F1328650BE3000A6FCB /* DrinksiOSTests.swift in Sources */,
+				3AFB6F1328650BE3000A6FCB /* DrinksViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
