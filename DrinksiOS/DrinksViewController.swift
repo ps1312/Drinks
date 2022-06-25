@@ -29,19 +29,19 @@ class DrinksViewController: UITableViewController {
     @objc private func loadData() {
         tableView.refreshControl?.beginRefreshing()
 
-        getDrinks { [weak self] result in
+        getDrinks { result in
             switch (result) {
             case .success(let drinks):
-                self?.drinks = drinks
-                self?.tableView.reloadData()
+                self.drinks = drinks
+                self.tableView.reloadData()
             case .failure:
                 let errorLabel = UILabel()
                 errorLabel.textAlignment = .center
                 errorLabel.text = "Something went wrong..."
-                self?.tableView.backgroundView = errorLabel
+                self.tableView.backgroundView = errorLabel
             }
 
-            self?.tableView.refreshControl?.endRefreshing()
+            self.tableView.refreshControl?.endRefreshing()
         }
     }
 

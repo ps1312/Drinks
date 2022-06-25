@@ -126,6 +126,8 @@ class DrinksViewControllerTests: XCTestCase {
         sut.getDrinks = { _ in }
         sut.getImage = { _, _ in }
 
+        addTeardownBlock { [weak sut] in XCTAssertNil(sut) }
+
         return sut
     }
 

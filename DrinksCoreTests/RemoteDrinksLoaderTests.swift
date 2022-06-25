@@ -60,6 +60,9 @@ class RemoteDrinksLoaderTests: XCTestCase {
         let httpClient = HTTPClientSpy()
         let sut = RemoteDrinksLoader(url: url, httpClient: httpClient)
 
+        addTeardownBlock { [weak httpClient] in XCTAssertNil(httpClient) }
+        addTeardownBlock { [weak sut] in XCTAssertNil(sut) }
+
         return (sut, httpClient)
     }
 
