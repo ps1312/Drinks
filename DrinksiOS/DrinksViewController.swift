@@ -9,8 +9,8 @@ import UIKit
 import DrinksCore
 
 class DrinksViewController: UITableViewController {
-    var count = 0
     var drinks = [Drink]()
+    var currentDrinkId: Int? = nil
     var getDrinks: DrinksLoader!
     var getImage: ((URL, @escaping (Result<Data, Error>) -> Void) -> Void)!
 
@@ -45,6 +45,7 @@ class DrinksViewController: UITableViewController {
         }
     }
 
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let drink = drinks[indexPath.row]
 
@@ -57,6 +58,17 @@ class DrinksViewController: UITableViewController {
         return drinkCell
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { return drinks.count }
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return drinks.count
+    }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let bundle = Bundle(for: DrinkDetailsViewController.self)
+        let sb = UIStoryboard(name: "Main", bundle: bundle)
+        let vc = sb.instantiateViewController(withIdentifier: "DrinkDetailsViewController") as! DrinkDetailsViewController
+        vc.drinkId = drinks[indexPath.row].id
+
+        navigationController?.pushViewController(vc, animated: true)
+    }
 }
 

@@ -155,6 +155,10 @@ private extension DrinksViewController {
         return tableView(tableView, cellForRowAt: IndexPath(row: row, section: 0)) as! DrinkListItem
     }
 
+    func selectCell(atRow row: Int) {
+        tableView(tableView, didSelectRowAt: IndexPath(row: row, section: 0))
+    }
+
     func simulatePullToRefresh() {
         tableView.refreshControl?.sendActions(for: .valueChanged)
     }

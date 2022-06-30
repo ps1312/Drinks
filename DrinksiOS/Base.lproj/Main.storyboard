@@ -13,7 +13,7 @@
         <scene sceneID="9Pu-Ef-zpH">
             <objects>
                 <tableViewController storyboardIdentifier="DrinksViewController" id="sU3-0k-amU" customClass="DrinksViewController" customModule="DrinksiOS" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="120" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="Rz5-gQ-hPY">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="120" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="Rz5-gQ-hPY">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -81,9 +81,6 @@
                                             <state key="normal" title="ver mais">
                                                 <color key="titleColor" name="AccentColor"/>
                                             </state>
-                                            <connections>
-                                                <action selector="displayDetails:" destination="hHb-QK-JPb" eventType="touchUpInside" id="vyH-Wl-wBn"/>
-                                            </connections>
                                         </button>
                                     </subviews>
                                     <constraints>
@@ -99,7 +96,6 @@
                                 </tableViewCellContentView>
                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <connections>
-                                    <outlet property="detailsButton" destination="8Zk-1c-hJq" id="a6K-UN-QPS"/>
                                     <outlet property="loadingIndicator" destination="NUe-fE-K91" id="vnp-MF-qIY"/>
                                     <outlet property="nameLabel" destination="JHg-QT-nBN" id="2eK-h7-d5N"/>
                                     <outlet property="retryButton" destination="bBD-QO-DvV" id="7DQ-v9-bvS"/>
@@ -118,6 +114,22 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="s1d-EA-fWX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="907.24637681159425" y="35.491071428571423"/>
+        </scene>
+        <!--Drink Details View Controller-->
+        <scene sceneID="Jg9-gA-zh1">
+            <objects>
+                <viewController storyboardIdentifier="DrinkDetailsViewController" id="rR9-HR-Xtl" customClass="DrinkDetailsViewController" customModule="DrinksiOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="1Sj-hc-Szj">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="gen-yb-t75"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="0WF-o5-hqU"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qK7-Xw-Gv5" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1952" y="35"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="IoN-li-YKw">
@@ -195,7 +207,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ViF-8T-fYc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2059" y="35"/>
+            <point key="canvasLocation" x="3235" y="1126"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="OH7-oY-duF">
