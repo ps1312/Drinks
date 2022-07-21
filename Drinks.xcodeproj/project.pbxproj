@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		3A078A82286525F7008B3504 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3AFB6F2E28650C00000A6FCB /* Main.storyboard */; };
+		3A36386F2889C30B0010CA49 /* ImageViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A36386E2889C30B0010CA49 /* ImageViewTests.swift */; };
 		3A77925028591E4800C76D50 /* SharedHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A77924F28591E4800C76D50 /* SharedHelpers.swift */; };
-		3A7DC2DB286BAD43009B160B /* DrinksDetailsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7DC2DA286BAD43009B160B /* DrinksDetailsViewControllerTests.swift */; };
 		3A7DC2DD286BADBC009B160B /* DrinkDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7DC2DC286BADBC009B160B /* DrinkDetailsViewController.swift */; };
 		3AAE10C6285009990013C555 /* DrinksCoreIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AAE10C5285009990013C555 /* DrinksCoreIntegrationTests.swift */; };
 		3AAE10C7285009990013C555 /* DrinksCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AD686F4284E962F00D6B889 /* DrinksCore.framework */; };
@@ -77,8 +77,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3A36386E2889C30B0010CA49 /* ImageViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewTests.swift; sourceTree = "<group>"; };
 		3A77924F28591E4800C76D50 /* SharedHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedHelpers.swift; sourceTree = "<group>"; };
-		3A7DC2DA286BAD43009B160B /* DrinksDetailsViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinksDetailsViewControllerTests.swift; sourceTree = "<group>"; };
 		3A7DC2DC286BADBC009B160B /* DrinkDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkDetailsViewController.swift; sourceTree = "<group>"; };
 		3AAE10C3285009990013C555 /* DrinksCoreIntegrationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DrinksCoreIntegrationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AAE10C5285009990013C555 /* DrinksCoreIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinksCoreIntegrationTests.swift; sourceTree = "<group>"; };
@@ -217,7 +217,7 @@
 			isa = PBXGroup;
 			children = (
 				3AFB6F1228650BE3000A6FCB /* DrinksViewControllerTests.swift */,
-				3A7DC2DA286BAD43009B160B /* DrinksDetailsViewControllerTests.swift */,
+				3A36386E2889C30B0010CA49 /* ImageViewTests.swift */,
 			);
 			path = DrinksiOSTests;
 			sourceTree = "<group>";
@@ -470,8 +470,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A36386F2889C30B0010CA49 /* ImageViewTests.swift in Sources */,
 				3AB0E145286527B400F9907E /* SharedHelpers.swift in Sources */,
-				3A7DC2DB286BAD43009B160B /* DrinksDetailsViewControllerTests.swift in Sources */,
 				3AFB6F1328650BE3000A6FCB /* DrinksViewControllerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
